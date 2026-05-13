@@ -28,7 +28,7 @@ export default defineConfig({
     tailwind({
       applyBaseStyles: false, // Importamos global.css manualmente para controlar el orden
     }),
-    sitemap(),
+    // sitemap(),
   ],
   vite: {
     server: {
