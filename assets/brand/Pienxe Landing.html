@@ -1,0 +1,836 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pienxe — Piensa antes de construir.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --bg:#030303;
+  --fg:#FEFEFE;
+  --accent:#02DEF0;
+  --muted:#A1A1AA;
+  --muted-2:#6B6B72;
+  --surface:#0A0A0B;
+  --border:#1F1F22;
+  --border-strong:#2A2A2E;
+  --ease:cubic-bezier(0.22,1,0.36,1);
+  --maxw:1280px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);}
+body{
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  font-size:16px;line-height:1.625;letter-spacing:-0.011em;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+::selection{background:var(--accent);color:var(--bg)}
+a{color:inherit;text-decoration:none}
+.mono{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;letter-spacing:0}
+.display{font-family:'Outfit',system-ui,sans-serif;letter-spacing:-0.025em;font-weight:600;line-height:1}
+.muted{color:var(--muted)}
+.container{max-width:var(--maxw);margin:0 auto;padding:0 32px}
+.hairline{height:1px;background:var(--border);border:0}
+
+/* NAVBAR */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:50;height:72px;
+  background:rgba(3,3,3,0.72);backdrop-filter:saturate(140%) blur(14px);
+  -webkit-backdrop-filter:saturate(140%) blur(14px);
+  border-bottom:1px solid var(--border);
+}
+.nav-inner{height:100%;display:flex;align-items:center;justify-content:space-between;gap:32px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand svg.wordmark{height:22px;width:auto;display:block}
+.brand svg.wordmark-lg{height:28px;width:auto;display:block}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{font-size:13px;color:var(--muted);transition:color .12s var(--ease)}
+.nav-links a:hover{color:var(--fg)}
+.nav-right{display:flex;align-items:center;gap:18px}
+.lang{display:flex;gap:0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted-2)}
+.lang span{padding:0 8px;border-right:1px solid var(--border)}
+.lang span:last-child{border-right:0}
+.lang .on{color:var(--fg)}
+.cta-primary{
+  display:inline-flex;align-items:center;gap:8px;
+  background:var(--accent);color:#030303;
+  font-weight:500;font-size:13px;padding:9px 16px;border-radius:8px;
+  transition:filter .12s var(--ease), transform .12s var(--ease);
+}
+.cta-primary:hover{filter:brightness(1.08)}
+.cta-secondary{
+  display:inline-flex;align-items:center;gap:8px;
+  background:transparent;color:var(--fg);
+  border:1px solid var(--border);
+  font-weight:500;font-size:13px;padding:9px 16px;border-radius:8px;
+  transition:border-color .15s var(--ease);
+}
+.cta-secondary:hover{border-color:var(--fg)}
+@media (max-width:920px){.nav-links{display:none}}
+
+/* HERO */
+.hero{position:relative;min-height:100vh;min-height:100dvh;padding-top:72px;overflow:hidden;display:flex;flex-direction:column}
+.hero-bg{position:absolute;inset:0;pointer-events:none;z-index:0}
+.dot-grid{
+  position:absolute;inset:0;opacity:.06;
+  background-image:radial-gradient(circle, #fff 1px, transparent 1px);
+  background-size:32px 32px;
+}
+.col-lines{
+  position:absolute;inset:0;display:grid;grid-template-columns:repeat(12,1fr);
+  max-width:var(--maxw);margin:0 auto;padding:0 32px;
+}
+.col-lines span{border-right:1px solid rgba(255,255,255,0.025)}
+.col-lines span:first-child{border-left:1px solid rgba(255,255,255,0.025)}
+.glow-a, .glow-b{position:absolute;border-radius:50%;filter:blur(110px);opacity:.18;will-change:transform}
+.glow-a{width:780px;height:780px;background:radial-gradient(circle,#02DEF0 0%, transparent 60%);top:-260px;right:-200px;opacity:.10}
+.glow-b{width:600px;height:600px;background:radial-gradient(circle,#022a31 0%, transparent 70%);bottom:-180px;left:-160px;opacity:.55}
+.noise{
+  position:absolute;inset:0;opacity:.05;mix-blend-mode:overlay;pointer-events:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.5 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+.hero-meta{
+  position:relative;z-index:2;
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding:32px 32px 0; max-width:var(--maxw);margin:0 auto;width:100%;
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
+  text-transform:uppercase;letter-spacing:0.18em;
+}
+.hero-meta .left{display:flex;align-items:center;gap:10px}
+.dot-live{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent);animation:pulse 2s var(--ease) infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero-meta .right{text-align:right;line-height:1.7}
+.hero-meta .right span{display:block}
+
+.hero-grid{
+  position:relative;z-index:2;flex:1;
+  display:grid;grid-template-columns:1fr;gap:48px;
+  max-width:var(--maxw);margin:0 auto;width:100%;
+  padding:64px 32px 48px;align-items:center;
+}
+@media(min-width:1024px){
+  .hero-grid{grid-template-columns:1.6fr 1fr;gap:80px;padding:96px 32px 48px}
+}
+.hero-h1{
+  font-family:'Outfit',sans-serif;font-weight:600;
+  font-size:clamp(3.6rem, 9vw, 9rem);
+  line-height:0.92;letter-spacing:-0.035em;
+  margin:0 0 36px;
+}
+.hero-h1 .dot{color:var(--accent)}
+.hero-h1 .line{display:block;overflow:hidden}
+.hero-h1 .line > span{display:inline-block;transform:translateY(110%);animation:rise 1.1s var(--ease) forwards}
+.hero-h1 .line:nth-child(1) > span{animation-delay:.10s}
+.hero-h1 .line:nth-child(2) > span{animation-delay:.22s}
+.hero-h1 .line:nth-child(3) > span{animation-delay:.34s}
+@keyframes rise{from{transform:translateY(110%)}to{transform:translateY(0)}}
+
+.hero-sep{width:48px;height:1px;background:linear-gradient(90deg,var(--accent),transparent);margin:0 0 24px;opacity:.55}
+.hero-lead{font-size:19px;line-height:1.55;max-width:520px;color:var(--fg);margin:0 0 36px}
+.hero-lead .em{color:var(--muted)}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:36px}
+.hero-ctas .cta-primary{padding:14px 22px;font-size:14px}
+.hero-ctas .cta-secondary{padding:14px 22px;font-size:14px}
+.hero-promise{font-size:13px;color:var(--muted);font-style:italic;max-width:420px}
+
+.lab{
+  position:relative;
+  background:linear-gradient(180deg, rgba(10,10,11,.65), rgba(10,10,11,.25));
+  border:1px solid var(--border);
+  border-left:1px solid rgba(2,222,240,0.18);
+  border-radius:18px;padding:28px;
+  backdrop-filter:blur(8px);
+}
+.lab-label{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.3em;color:rgba(2,222,240,0.55);text-transform:uppercase;margin-bottom:24px;display:flex;justify-content:space-between}
+.lab-row{padding:20px 0;border-bottom:1px dashed var(--border)}
+.lab-row:last-child{border-bottom:0;padding-bottom:0}
+.lab-row:first-of-type{padding-top:8px}
+.lab-val{font-family:'Outfit',sans-serif;font-weight:600;font-size:42px;line-height:1;letter-spacing:-0.03em;margin-bottom:8px}
+.lab-key{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.2em;color:var(--muted);text-transform:uppercase}
+.lab-bar{height:1px;background:var(--border);margin-top:14px;position:relative;overflow:hidden}
+.lab-bar i{position:absolute;left:0;top:0;bottom:0;width:66%;background:var(--accent);animation:grow 2.2s var(--ease) .6s both}
+@keyframes grow{from{width:0}to{width:66%}}
+
+.hero-foot{
+  position:relative;z-index:2;
+  display:flex;justify-content:space-between;align-items:center;gap:24px;
+  max-width:var(--maxw);margin:0 auto;width:100%;
+  padding:24px 32px 28px;
+  border-top:1px solid var(--border);
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
+  text-transform:uppercase;letter-spacing:0.18em;
+}
+.hero-foot .progress{flex:1;height:1px;background:var(--border);margin:0 24px;position:relative;max-width:480px}
+.hero-foot .progress i{position:absolute;left:0;top:0;bottom:0;width:14%;background:var(--fg)}
+.scroll-ind{display:flex;align-items:center;gap:8px}
+.scroll-ind .iso{width:11px;height:11px}
+
+/* SECTION COMMON */
+section.scope{position:relative;padding:128px 0;border-top:1px solid var(--border)}
+.eyebrow{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);
+  text-transform:uppercase;letter-spacing:0.3em;margin-bottom:24px;
+  display:flex;align-items:center;gap:10px;
+}
+.eyebrow .iso{width:10px;height:10px}
+.eyebrow .num{color:var(--muted-2)}
+h2.section-title{
+  font-family:'Outfit',sans-serif;font-weight:600;
+  font-size:clamp(2.4rem, 5vw, 4rem);
+  line-height:1.02;letter-spacing:-0.03em;margin:0 0 24px;
+  max-width:14ch;
+}
+.section-sub{font-size:18px;line-height:1.55;color:var(--muted);max-width:560px;margin:0 0 64px}
+.section-head{display:grid;grid-template-columns:1fr;gap:24px;margin-bottom:72px}
+@media(min-width:1024px){.section-head{grid-template-columns:1.2fr 1fr;align-items:end}}
+
+/* SERVICES */
+.services-grid{display:grid;grid-template-columns:1fr;gap:24px}
+@media(min-width:768px){.services-grid{grid-template-columns:1fr 1fr;gap:32px}}
+.service{
+  position:relative;border:1px solid var(--border);border-radius:18px;padding:48px;
+  background:transparent;transition:all .25s var(--ease);overflow:hidden;
+  display:flex;flex-direction:column;min-height:340px;
+}
+.service:hover{border-color:rgba(254,254,254,0.4);background:var(--surface)}
+.service:hover .service-num{transform:scale(1.04)}
+.service-num{
+  font-family:'JetBrains Mono',monospace;font-size:42px;font-weight:500;
+  color:var(--accent);line-height:1;letter-spacing:-0.02em;margin-bottom:32px;
+  transition:transform .25s var(--ease);transform-origin:left;
+}
+.service-title{font-family:'Outfit',sans-serif;font-weight:600;font-size:30px;line-height:1.1;letter-spacing:-0.025em;margin:0 0 16px}
+.service-desc{font-size:15px;line-height:1.6;color:var(--muted);margin:0 0 auto;max-width:36ch}
+.service-sign{
+  margin-top:32px;padding-top:24px;border-top:1px solid var(--border);
+  display:flex;align-items:center;gap:10px;font-size:13px;font-style:italic;color:rgba(254,254,254,0.85);
+}
+.service-sign .iso{width:13px;height:13px;flex-shrink:0}
+
+/* CASES */
+.case{display:grid;grid-template-columns:1fr;gap:48px;margin-bottom:128px}
+.case:last-child{margin-bottom:0}
+@media(min-width:1024px){
+  .case{grid-template-columns:7fr 5fr;gap:80px;align-items:center}
+  .case.reverse .case-visual{order:2}
+  .case.reverse .case-info{order:1}
+}
+.case-visual{
+  position:relative;aspect-ratio:16/10;border:1px solid var(--border);
+  border-radius:18px;overflow:hidden;background:var(--surface);
+  transition:transform .35s var(--ease);
+}
+.case-visual:hover{transform:translateY(-3px);box-shadow:0 0 64px -16px rgba(2,222,240,0.25)}
+.case-tag{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.28em;margin-bottom:20px}
+.case-name{font-family:'Outfit',sans-serif;font-weight:600;font-size:36px;line-height:1.05;letter-spacing:-0.028em;margin:0 0 24px}
+.case-desc{font-size:16px;line-height:1.6;color:var(--muted);margin:0 0 32px;max-width:42ch}
+.case-result{display:flex;gap:12px;font-size:15px;color:var(--fg);margin-bottom:36px;max-width:42ch}
+.case-result .arrow{color:var(--accent);flex-shrink:0}
+.case-link{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:'JetBrains Mono',monospace;font-size:12px;text-transform:uppercase;letter-spacing:0.22em;
+  color:var(--fg);border-bottom:1px solid var(--border);padding-bottom:8px;
+  transition:color .15s var(--ease), border-color .15s var(--ease);
+}
+.case-link:hover{color:var(--accent);border-color:var(--accent)}
+.case-link .arr{transition:transform .2s var(--ease);display:inline-block}
+.case-link:hover .arr{transform:translateX(4px)}
+
+/* placeholder visuals */
+.viz{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.viz .label{position:absolute;top:16px;left:16px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;color:var(--muted-2);text-transform:uppercase;z-index:3}
+.viz .label-r{position:absolute;top:16px;right:16px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.25em;color:var(--muted-2);text-transform:uppercase;z-index:3}
+
+/* Mariachi orchestration viz */
+.viz-orch{background:radial-gradient(circle at center, rgba(2,222,240,0.06), transparent 70%), var(--surface)}
+.viz-orch svg{width:100%;height:100%;display:block}
+
+/* Riedel dashboard viz */
+.viz-dash{background:var(--surface);padding:48px 36px;display:block !important}
+.viz-dash .row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
+.viz-dash .row.tall{grid-template-columns:1.4fr 1fr}
+.viz-dash .tile{
+  border:1px solid var(--border);border-radius:8px;padding:14px;background:#070708;
+  display:flex;flex-direction:column;gap:8px;justify-content:space-between;min-height:70px;
+}
+.viz-dash .tile .k{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:0.22em;color:var(--muted-2);text-transform:uppercase}
+.viz-dash .tile .v{font-family:'Outfit',sans-serif;font-weight:600;font-size:22px;letter-spacing:-0.02em}
+.viz-dash .tile.accent .v{color:var(--accent)}
+.viz-dash .spark{height:18px;display:flex;align-items:flex-end;gap:2px}
+.viz-dash .spark i{flex:1;background:rgba(254,254,254,0.18);border-radius:1px}
+.viz-dash .spark.cy i{background:rgba(2,222,240,0.55)}
+
+/* PROCESS */
+.process-wrap{position:relative;padding-left:0}
+.steps{position:relative;padding-left:48px}
+.steps::before{
+  content:"";position:absolute;left:7px;top:8px;bottom:8px;width:1px;
+  background:linear-gradient(180deg, var(--accent) 0%, var(--accent) 70%, transparent 100%);
+  opacity:.4;
+}
+.step{position:relative;padding-bottom:96px}
+.step:last-child{padding-bottom:0}
+.step::before{
+  content:"";position:absolute;left:-48px;top:6px;width:15px;height:15px;
+  border-radius:50%;background:var(--accent);
+  box-shadow:0 0 0 4px rgba(2,222,240,0.15), 0 0 18px rgba(2,222,240,0.4);
+}
+.step-num{font-family:'JetBrains Mono',monospace;font-size:48px;font-weight:500;color:var(--accent);line-height:1;letter-spacing:-0.02em;margin-bottom:14px;opacity:.95}
+.step-title{font-family:'Outfit',sans-serif;font-weight:600;font-size:30px;line-height:1.1;letter-spacing:-0.025em;margin:0 0 8px}
+.step-tagline{font-size:15px;font-style:italic;color:var(--muted);margin-bottom:24px}
+.step-desc{font-size:16px;line-height:1.6;color:rgba(254,254,254,0.88);max-width:60ch;margin:0 0 28px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{
+  font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.18em;
+  color:var(--muted);padding:8px 14px;border:1px solid var(--border);border-radius:24px;
+}
+
+/* STACK + MANIFESTO */
+.dual{display:grid;grid-template-columns:1fr;gap:64px}
+@media(min-width:1024px){.dual{grid-template-columns:5fr 7fr;gap:96px;position:relative}}
+.dual .divider{display:none}
+@media(min-width:1024px){.dual .divider{display:block;position:absolute;left:calc(5 / 12 * 100%);top:0;bottom:0;width:1px;background:var(--border);transform:translateX(48px)}}
+
+.engine h3{font-family:'Outfit',sans-serif;font-weight:600;font-size:34px;line-height:1.1;letter-spacing:-0.025em;margin:0 0 16px}
+.engine p{font-size:15px;color:var(--muted);line-height:1.6;margin:0 0 48px;max-width:34ch}
+.stack-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.stack-item{
+  height:72px;border:1px solid var(--border);border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'JetBrains Mono',monospace;font-size:13px;color:rgba(254,254,254,0.6);
+  transition:all .2s var(--ease);
+}
+.stack-item:hover{color:var(--fg);border-color:rgba(2,222,240,0.4)}
+
+.manifesto-eyebrow{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:0.3em;margin-bottom:16px}
+.manifesto h3{font-family:'Outfit',sans-serif;font-weight:600;font-size:34px;line-height:1.1;letter-spacing:-0.025em;margin:0 0 48px}
+.principle{display:grid;grid-template-columns:48px 1fr;gap:24px;padding:24px 0;border-bottom:1px solid var(--border)}
+.principle:last-child{border-bottom:0}
+.principle .pnum{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:500;color:var(--accent);letter-spacing:-0.01em}
+.principle .ptitle{font-family:'Outfit',sans-serif;font-weight:500;font-size:18px;line-height:1.35;letter-spacing:-0.018em;margin:0 0 6px}
+.principle .pbody{font-size:14px;color:var(--muted);line-height:1.55;margin:0}
+
+/* PRICING */
+.pricing{display:grid;grid-template-columns:1fr;gap:32px}
+@media(min-width:900px){.pricing{grid-template-columns:1fr 1fr;gap:40px}}
+.plan{
+  position:relative;background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:48px;
+  display:flex;flex-direction:column;
+}
+.plan.rec{border-color:rgba(2,222,240,0.45);box-shadow:0 0 80px -24px rgba(2,222,240,0.28)}
+.plan-rec-tag{
+  position:absolute;top:-12px;right:24px;
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);
+  text-transform:uppercase;letter-spacing:0.3em;
+  background:var(--bg);padding:6px 12px;border:1px solid rgba(2,222,240,0.45);border-radius:24px;
+  display:flex;align-items:center;gap:6px;
+}
+.plan-rec-tag .iso{width:9px;height:9px}
+.plan-badge{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.28em;margin-bottom:24px}
+.plan-name{font-family:'Outfit',sans-serif;font-weight:600;font-size:32px;line-height:1.1;letter-spacing:-0.028em;margin:0 0 16px}
+.plan-desc{font-size:15px;color:var(--muted);line-height:1.6;margin:0 0 36px;max-width:36ch}
+.plan ul{list-style:none;padding:0;margin:0 0 40px;display:flex;flex-direction:column;gap:14px;flex:1}
+.plan li{display:flex;gap:14px;align-items:flex-start;font-size:15px;line-height:1.5}
+.plan li .check{flex-shrink:0;margin-top:4px;width:14px;height:14px;color:var(--muted-2)}
+.plan.rec li .check{color:var(--accent)}
+.plan .cta-primary, .plan .cta-secondary{width:100%;justify-content:center;padding:14px 22px;font-size:14px}
+
+/* FOOTER */
+.foot{padding:0 0 0;border-top:1px solid var(--border)}
+.foot-cta{padding:128px 0 96px;border-bottom:1px solid var(--border)}
+.foot-h2{font-family:'Outfit',sans-serif;font-weight:600;font-size:clamp(2.4rem,5vw,4.5rem);line-height:1.02;letter-spacing:-0.03em;margin:0 0 48px;max-width:18ch}
+.foot-ctas{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:48px}
+.foot-ctas .cta-primary, .foot-ctas .cta-secondary{padding:16px 28px;font-size:15px}
+.scarcity{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--muted)}
+.scarcity .iso{width:12px;height:12px}
+
+.foot-cols{padding:80px 0;display:grid;grid-template-columns:1fr;gap:48px;border-bottom:1px solid var(--border)}
+@media(min-width:768px){.foot-cols{grid-template-columns:1.4fr 1fr 1fr 1fr;gap:64px}}
+.foot-cols h4{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:0.28em;margin:0 0 24px}
+.foot-cols ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:14px}
+.foot-cols a{font-size:14px;color:var(--fg);transition:color .12s var(--ease)}
+.foot-cols a:hover{color:var(--accent)}
+.foot-about p{font-size:14px;color:var(--muted);line-height:1.6;max-width:32ch;margin:16px 0 0}
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;padding:28px 0;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.2em;flex-wrap:wrap;gap:12px}
+.foot-bottom .left{display:flex;align-items:center;gap:10px}
+
+/* Reveal */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .9s var(--ease), transform .9s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.reveal[data-delay="1"]{transition-delay:.08s}
+.reveal[data-delay="2"]{transition-delay:.16s}
+.reveal[data-delay="3"]{transition-delay:.24s}
+.reveal[data-delay="4"]{transition-delay:.32s}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important}
+  .reveal{opacity:1;transform:none}
+}
+
+/* Mobile tweaks */
+@media (max-width:720px){
+  .container{padding:0 20px}
+  section.scope{padding:88px 0}
+  .service{padding:32px}
+  .plan{padding:32px}
+  .foot-cta{padding:88px 0 72px}
+  .hero-grid{padding:48px 20px}
+  .hero-meta{padding:24px 20px 0}
+  .hero-foot{padding:20px 20px 24px}
+  .steps{padding-left:36px}
+  .step::before{left:-36px}
+  .col-lines{padding:0 20px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav" data-screen-label="00 Nav">
+  <div class="container nav-inner">
+    <a class="brand" href="#top" aria-label="Pienxe">
+      <svg class="wordmark" viewBox="0 0 998 349" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M84.5114 108.373C107.541 106.366 130.468 113.247 148.586 127.604C167.534 142.607 180.732 165.311 183.308 189.431C186.172 214.134 178.757 238.93 162.801 258.004C147.337 276.862 124.987 288.769 100.71 291.083C77.0877 293.273 53.561 286.019 35.2741 270.907C31.9552 268.251 29.0709 265.34 26.026 262.379C25.483 290.514 25.8651 319.972 25.8541 348.208L0.190087 348.123C-0.18489 338.418 0.109915 326.715 0.113915 316.857L0.131493 258.729L0.078759 219.896C0.0617591 207.435 -0.432454 193.624 2.17251 181.517C5.36451 167.039 11.9099 153.512 21.2819 142.024C37.1419 122.336 58.6651 111.164 83.6481 108.496C83.9359 108.455 84.2236 108.414 84.5114 108.373ZM157.376 194.004C154.134 158.084 122.418 131.573 86.4928 134.751C50.4758 137.937 23.8815 169.75 27.1325 205.762C30.3836 241.773 62.2448 268.309 98.2497 264.994C134.164 261.687 160.618 229.924 157.376 194.004Z" fill="#FEFEFE"/><path d="M370.756 112.771C374.631 112.242 382.734 112.308 386.658 112.593C408.698 114.273 429.159 124.675 443.503 141.493C461.307 162.115 466.032 184.219 464.019 210.613L321.068 210.674C323.175 219.354 326.341 226.947 331.781 234.123C341.347 246.789 355.58 255.107 371.311 257.223C388.966 259.631 404.383 254.794 418.35 244.099C422.118 240.972 424.576 238.241 427.925 234.641C435.549 238.42 443.114 242.317 450.615 246.332C450.007 247.267 449.362 248.179 448.684 249.065C419.505 287.618 365.074 295.244 326.931 265.307C309.049 251.149 297.488 230.494 294.771 207.848C292.148 184.982 298.823 162.022 313.297 144.128C327.482 126.407 348.179 115.112 370.756 112.771ZM438.172 185.335C429.539 154.164 405.513 135.352 372.67 138.459C345.336 142.448 328.023 158.867 320.901 185.338L387.41 185.367L438.172 185.335Z" fill="#FEFEFE"/><path d="M903.531 112.78C907.42 112.226 915.76 112.292 919.71 112.585C941.87 114.263 962.421 124.823 976.681 141.869C993.811 161.939 998.951 184.874 996.811 210.621L853.99 210.689C855.891 219.398 859.674 227.587 865.071 234.68C874.751 247.225 889.031 255.39 904.75 257.365C922.04 259.524 937.471 254.734 951.091 244.17C954.501 241.427 957.62 237.924 960.63 234.718C968.39 238.398 976.04 242.296 983.58 246.408C982.95 247.339 982.291 248.253 981.601 249.145C953.111 286.746 900.08 294.975 862.034 266.917C843.562 253.295 830.565 231.552 827.757 208.733C824.842 185.64 831.466 162.355 846.099 144.254C860.238 126.474 880.931 115.131 903.531 112.78ZM970.941 185.369C963.381 155.779 936.681 133.42 905.321 138.436C877.841 142.931 861.135 158.703 853.661 185.378L920.83 185.358L970.941 185.369Z" fill="#FEFEFE"/><path d="M787.248 112.523C797.638 112.435 808.18 112.556 818.583 112.582C812.213 119.819 802.273 133.895 796.297 141.841L754.258 197.662C760.579 206.78 769.31 217.689 776.098 226.682L818.11 282.609C814.347 283.255 791.76 282.956 787.182 282.949C784.945 279.704 782.281 276.139 779.832 273.015C765.926 255.279 753.043 235.592 738.513 218.461C732.55 225.438 725.839 234.861 720.251 242.308L689.828 282.942L658.75 282.838C666.345 273.467 674.532 261.964 681.847 252.163C695.367 233.975 708.978 215.855 722.68 197.804C702.933 169.987 679.305 140.218 658.662 112.582L689.741 112.518C705.305 133.232 722.507 157.133 738.657 177.141L787.248 112.523Z" fill="#FEFEFE"/><path d="M560.565 110.948C580.12 109.75 600.339 118.07 614.004 131.961C623.164 141.267 629.651 152.867 632.784 165.544C635.816 177.757 634.93 201.255 634.925 214.561L634.821 282.823L609.266 282.949L609.306 213.21C609.322 204.018 609.906 182.907 608.415 174.581C607.126 167.355 604.143 160.537 599.712 154.686C590.979 143.322 580.49 138.796 566.691 136.979L565.794 136.964C552.485 136.857 540.191 140.924 530.708 150.511C524.582 156.712 520.372 164.547 518.581 173.077C516.64 181.893 517.364 203.189 517.367 213.168L517.385 282.842L492.06 282.878C490.947 251.708 492.797 219.579 491.923 188.39C490.74 146.135 517.975 114.193 560.565 110.948Z" fill="#FEFEFE"/><path d="M230.293 108.246L256.016 108.072L255.928 282.812L230.258 282.841L230.293 108.246Z" fill="#FEFEFE"/><path d="M242.307 0C243.735 1.60151 243.682 28.8617 250.742 37.7451C252.35 39.768 254.434 41.2615 256.759 42.3471C265.775 46.5575 281.898 47.4238 291.811 48.5046C280.972 50.431 262.981 49.8397 253.581 56.4953C243.998 63.28 244.312 85.6891 242.585 96.7457L242.561 97C242.071 96.9074 241.841 93.1798 241.77 92.5194C240.801 83.5045 239.818 67.7107 234.702 60.1528C227.451 49.4423 205.467 50.6119 194.16 48.5674L193.811 48.5026C237.125 43.497 237.985 44.7683 242.307 0Z" fill="#02DEF0"/></svg>
+    </a>
+    <div class="nav-links">
+      <a href="#servicios">Servicios</a>
+      <a href="#casos">Casos</a>
+      <a href="#proceso">Proceso</a>
+      <a href="#colaboracion">Colaboración</a>
+    </div>
+    <div class="nav-right">
+      <div class="lang" aria-label="Idiomas">
+        <span class="on">ES</span><span>EN</span><span>DE</span>
+      </div>
+      <a class="cta-primary" href="#contacto">Hablemos <span aria-hidden="true">→</span></a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header id="top" class="hero" data-screen-label="01 Hero">
+  <div class="hero-bg">
+    <div class="dot-grid"></div>
+    <div class="col-lines" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="glow-a"></div>
+    <div class="glow-b"></div>
+    <div class="noise"></div>
+  </div>
+
+  <div class="hero-meta">
+    <div class="left"><span class="dot-live" aria-hidden="true"></span><span>Status: Active_Systems</span></div>
+    <div class="right">
+      <span>LAT 53.5511° N</span>
+      <span>LON 9.9937° E</span>
+      <span>V2.4 // BOUTIQUE</span>
+    </div>
+  </div>
+
+  <div class="hero-grid">
+    <div>
+      <h1 class="hero-h1">
+        <span class="line"><span>Piensa</span></span>
+        <span class="line"><span>antes de</span></span>
+        <span class="line"><span>construir<span class="dot">.</span></span></span>
+      </h1>
+      <div class="hero-sep"></div>
+      <p class="hero-lead">Pienxe construye <span>web premium</span> y <span>orquestación de IA</span> <span class="em">para empresas que valoran el resultado, no el ruido.</span></p>
+      <div class="hero-ctas">
+        <a class="cta-primary" href="#contacto">Hablemos <span aria-hidden="true">→</span></a>
+        <a class="cta-secondary" href="#casos">Ver casos</a>
+      </div>
+      <p class="hero-promise">Lo que entregamos opera el lunes. O no lo entregamos.</p>
+    </div>
+
+    <aside class="lab" aria-label="Laboratorio">
+      <div class="lab-label"><span>Laboratory_Output</span><span>· 04</span></div>
+      <div class="lab-row">
+        <div class="lab-val">99.9<span style="font-size:24px;letter-spacing:0">%</span></div>
+        <div class="lab-key">Uptime · LH 100/100</div>
+      </div>
+      <div class="lab-row">
+        <div class="lab-val">0—1</div>
+        <div class="lab-key">Engineering_Cycle</div>
+      </div>
+      <div class="lab-row">
+        <div class="lab-val">∞</div>
+        <div class="lab-key">Boutique_Scale</div>
+      </div>
+      <div class="lab-row" style="border:0;padding-bottom:0">
+        <div class="lab-key" style="margin-bottom:10px">Capacity_Q2</div>
+        <div class="lab-bar"><i></i></div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="hero-foot">
+    <span>01 / 07</span>
+    <div class="progress"><i></i></div>
+    <span class="scroll-ind"><svg class="iso" viewBox="0 0 584 584" fill="none" aria-hidden="true"><path d="M289.904 42C297.263 50.2552 296.991 190.772 333.37 236.563C341.654 246.99 352.397 254.688 364.376 260.284C410.836 281.987 493.918 286.452 545 292.024C489.146 301.954 396.439 298.906 347.999 333.213C298.617 368.186 300.234 483.697 291.334 540.689L291.211 542C288.688 541.523 287.503 522.308 287.137 518.904C282.144 472.436 277.079 391.024 250.715 352.066C213.35 296.857 100.063 302.886 41.7987 292.348L40 292.014C263.201 266.211 267.634 272.765 289.904 42Z" fill="#02DEF0"/></svg> Scroll</span>
+  </div>
+</header>
+
+<!-- SERVICIOS -->
+<section id="servicios" class="scope" data-screen-label="02 Servicios">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow reveal"><span class="num">§ 02</span> · Servicios</div>
+        <h2 class="section-title reveal" data-delay="1">Nuestro plano<br/>de obra.</h2>
+      </div>
+      <p class="section-sub reveal" data-delay="2">No vendemos servicios aislados. Construimos la cimentación, la estructura y la inteligencia. En ese orden. Sin excepciones.</p>
+    </div>
+
+    <div class="services-grid">
+      <article class="service reveal">
+        <div class="service-num">01</div>
+        <h3 class="service-title">Cimentación</h3>
+        <p class="service-desc">Naming técnico, identidad visual y design systems que no se rompen al escalar. Antes de construir, te damos identidad.</p>
+        <div class="service-sign">
+          <svg class="iso" viewBox="0 0 584 584" fill="none" aria-hidden="true"><path d="M289.904 42C297.263 50.2552 296.991 190.772 333.37 236.563C341.654 246.99 352.397 254.688 364.376 260.284C410.836 281.987 493.918 286.452 545 292.024C489.146 301.954 396.439 298.906 347.999 333.213C298.617 368.186 300.234 483.697 291.334 540.689L291.211 542C288.688 541.523 287.503 522.308 287.137 518.904C282.144 472.436 277.079 391.024 250.715 352.066C213.35 296.857 100.063 302.886 41.7987 292.348L40 292.014C263.201 266.211 267.634 272.765 289.904 42Z" fill="#FEFEFE"/></svg>
+          Cimentación, no decoración.
+        </div>
+      </article>
+      <article class="service reveal" data-delay="1">
+        <div class="service-num">02</div>
+        <h3 class="service-title">Estructura</h3>
+        <p class="service-desc">Sitios que cargan en menos de un segundo. Lighthouse 100/100/100/100 no es aspiración, es piso. Especificación antes que código.</p>
+        <div class="service-sign">
+          <svg class="iso" viewBox="0 0 584 584" fill="none" aria-hidden="true"><path d="M289.904 42C297.263 50.2552 296.991 190.772 333.37 236.563C341.654 246.99 352.397 254.688 364.376 260.284C410.836 281.987 493.918 286.452 545 292.024C489.146 301.954 396.439 298.906 347.999 333.213C298.617 368.186 300.234 483.697 291.334 540.689L291.211 542C288.688 541.523 287.503 522.308 287.137 518.904C282.144 472.436 277.079 391.024 250.715 352.066C213.35 296.857 100.063 302.886 41.7987 292.348L40 292.014C263.201 266.211 267.634 272.765 289.904 42Z" fill="#FEFEFE"/></svg>
+          Tu web es infraestructura.
+        </div>
+      </article>
+      <article class="service reveal" data-delay="2">
+        <div class="service-num">03</div>
+        <h3 class="service-title">Inteligencia</h3>
+        <p class="service-desc">IA que opera el lunes, no que impresiona en la demo. RAG sobre tus documentos, agentes autónomos que orquestan ventas, soporte y operaciones 24/7.</p>
+        <div class="service-sign">
+          <svg class="iso" viewBox="0 0 584 584" fill="none" aria-hidden="true"><path d="M289.904 42C297.263 50.2552 296.991 190.772 333.37 236.563C341.654 246.99 352.397 254.688 364.376 260.284C410.836 281.987 493.918 286.452 545 292.024C489.146 301.954 396.439 298.906 347.999 333.213C298.617 368.186 300.234 483.697 291.334 540.689L291.211 542C288.688 541.523 287.503 522.308 287.137 518.904C282.144 472.436 277.079 391.024 250.715 352.066C213.35 296.857 100.063 302.886 41.7987 292.348L40 292.014C263.201 266.211 267.634 272.765 289.904 42Z" fill="#FEFEFE"/></svg>
+          Plano de obra, no humo.
+        </div>
+      </article>
+      <article class="service reveal" data-delay="3">
+        <div class="service-num">04</div>
+        <h3 class="service-title">Escalabilidad</h3>
+        <p class="service-desc">Cuando tu operación crece, las herramientas dejan de hablarse. Orquestamos CRM, ERP, email y datos en una sola arquitectura.</p>
+        <div class="service-sign">
+          <svg class="iso" viewBox="0 0 584 584" fill="none" aria-hidden="true"><path d="M289.904 42C297.263 50.2552 296.991 190.772 333.37 236.563C341.654 246.99 352.397 254.688 364.376 260.284C410.836 281.987 493.918 286.452 545 292.024C489.146 301.954 396.439 298.906 347.999 333.213C298.617 368.186 300.234 483.697 291.334 540.689L291.211 542C288.688 541.523 287.503 522.308 287.137 518.904C282.144 472.436 277.079 391.024 250.715 352.066C213.35 296.857 100.063 302.886 41.7987 292.348L40 292.014C263.201 266.211 267.634 272.765 289.904 42Z" fill="#FEFEFE"/></svg>
+          Un cerebro, una vista, un punto de control.
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- CASOS -->
+<section id="casos" class="scope" data-screen-label="03 Casos">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow reveal"><span class="num">§ 03</span> · Prueba de Obra</div>
+        <h2 class="section-title reveal" data-delay="1">Sistemas, no<br/>promesas.</h2>
+      </div>
+      <p class="section-sub reveal" data-delay="2">No creemos en presentaciones. Creemos en infraestructura que opera y resultados que se miden el lunes.</p>
+    </div>
+
+    <article class="case reveal">
+      <div class="case-visual">
+        <div class="viz viz-orch">
+          <span class="label">CASE_01 / ORCHESTRATION</span>
+          <span class="label-r">LIVE</span>
+          <svg viewBox="0 0 600 380" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <radialGradient id="core" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#02DEF0" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="#02DEF0" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <!-- connecting lines -->
+            <g stroke="#02DEF0" stroke-width="0.8" fill="none" opacity="0.55">
+              <line x1="300" y1="190" x2="120" y2="100"/>
+              <line x1="300" y1="190" x2="480" y2="100"/>
+              <line x1="300" y1="190" x2="120" y2="280"/>
+              <line x1="300" y1="190" x2="480" y2="280"/>
+              <line x1="300" y1="190" x2="300" y2="60"/>
+              <line x1="300" y1="190" x2="300" y2="320"/>
+            </g>
+            <!-- core glow -->
+            <circle cx="300" cy="190" r="90" fill="url(#core)" opacity="0.5"/>
+            <circle cx="300" cy="190" r="38" fill="none" stroke="#02DEF0" stroke-width="1"/>
+            <circle cx="300" cy="190" r="22" fill="#02DEF0" opacity="0.18"/>
+            <circle cx="300" cy="190" r="6" fill="#02DEF0"/>
+            <!-- node boxes -->
+            <g font-family="JetBrains Mono, monospace" font-size="9" fill="#A1A1AA" letter-spacing="2">
+              <g><rect x="80" y="78" width="80" height="44" rx="4" fill="#0A0A0B" stroke="#1F1F22"/><text x="120" y="95" text-anchor="middle">CRM</text><text x="120" y="110" text-anchor="middle" fill="#FEFEFE" font-size="11">Pipeline</text></g>
+              <g><rect x="440" y="78" width="80" height="44" rx="4" fill="#0A0A0B" stroke="#1F1F22"/><text x="480" y="95" text-anchor="middle">WEB</text><text x="480" y="110" text-anchor="middle" fill="#FEFEFE" font-size="11">Sitio</text></g>
+              <g><rect x="80" y="258" width="80" height="44" rx="4" fill="#0A0A0B" stroke="#1F1F22"/><text x="120" y="275" text-anchor="middle">EMAIL</text><text x="120" y="290" text-anchor="middle" fill="#FEFEFE" font-size="11">Inbox</text></g>
+              <g><rect x="440" y="258" width="80" height="44" rx="4" fill="#0A0A0B" stroke="#1F1F22"/><text x="480" y="275" text-anchor="middle">DOCS</text><text x="480" y="290" text-anchor="middle" fill="#FEFEFE" font-size="11">RAG</text></g>
+              <g><rect x="260" y="36" width="80" height="34" rx="4" fill="#0A0A0B" stroke="#1F1F22"/><text x="300" y="56" text-anchor="middle" fill="#FEFEFE" font-size="10">AGENT_01</text></g>
+              <g><rect x="260" y="306" width="80" height="34" rx="4" fill="#0A0A0B" stroke="#1F1F22"/><text x="300" y="326" text-anchor="middle" fill="#FEFEFE" font-size="10">AGENT_02</text></g>
+            </g>
+            <!-- moving dots -->
+            <circle r="2.5" fill="#02DEF0"><animateMotion dur="3.4s" repeatCount="indefinite" path="M120,100 L300,190"/></circle>
+            <circle r="2.5" fill="#02DEF0"><animateMotion dur="4.0s" repeatCount="indefinite" path="M480,100 L300,190"/></circle>
+            <circle r="2.5" fill="#02DEF0"><animateMotion dur="3.6s" repeatCount="indefinite" path="M120,280 L300,190"/></circle>
+            <circle r="2.5" fill="#02DEF0"><animateMotion dur="4.2s" repeatCount="indefinite" path="M480,280 L300,190"/></circle>
+          </svg>
+        </div>
+      </div>
+      <div class="case-info">
+        <div class="case-tag">Automatización operativa</div>
+        <h3 class="case-name">Mariachi Express</h3>
+        <p class="case-desc">Orquestador de agentes: CRM, sitio web y herramientas operativas convergen en un solo sistema integrado. Cerebro único, vista única.</p>
+        <div class="case-result"><span class="arrow">→</span><span>Sincronización total en tiempo real. Reducción del tiempo operativo manual en un 64%.</span></div>
+        <a class="case-link" href="#">Explorar arquitectura <span class="arr">→</span></a>
+      </div>
+    </article>
+
+    <article class="case reverse reveal">
+      <div class="case-visual">
+        <div class="viz viz-dash">
+          <span class="label" style="position:absolute;top:16px;left:16px">CASE_02 / DASHBOARD</span>
+          <span class="label-r">PROPSTACK</span>
+          <div style="margin-top:36px"></div>
+          <div class="row">
+            <div class="tile accent"><span class="k">PORTFOLIO</span><span class="v">€18.4M</span><div class="spark cy"><i style="height:30%"></i><i style="height:55%"></i><i style="height:45%"></i><i style="height:70%"></i><i style="height:60%"></i><i style="height:85%"></i><i style="height:75%"></i><i style="height:92%"></i></div></div>
+            <div class="tile"><span class="k">LISTINGS</span><span class="v">47</span></div>
+            <div class="tile"><span class="k">LEADS</span><span class="v">128</span></div>
+          </div>
+          <div class="row tall">
+            <div class="tile"><span class="k">CONVERSION_RATE</span><div class="spark"><i style="height:40%"></i><i style="height:55%"></i><i style="height:48%"></i><i style="height:62%"></i><i style="height:70%"></i><i style="height:58%"></i><i style="height:72%"></i><i style="height:80%"></i><i style="height:68%"></i><i style="height:88%"></i></div><span class="v" style="font-size:18px">8.4%</span></div>
+            <div class="tile"><span class="k">DEALS_OPEN</span><span class="v">12</span></div>
+          </div>
+          <div class="row">
+            <div class="tile"><span class="k">AVG_DOM</span><span class="v">23d</span></div>
+            <div class="tile"><span class="k">RESPONSE</span><span class="v">3min</span></div>
+            <div class="tile"><span class="k">PIPELINE</span><span class="v" style="color:var(--accent)">€4.1M</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="case-info">
+        <div class="case-tag">Consolidación de decisión</div>
+        <h3 class="case-name">Andre Riedel Immobilien</h3>
+        <p class="case-desc">Dashboard privado unificado con integración a medida sobre CRM Propstack. Una sola vista que no muestra datos: sugiere decisiones.</p>
+        <div class="case-result"><span class="arrow">→</span><span>Vista única de KPIs. De ocho herramientas dispersas a un solo punto de control.</span></div>
+        <a class="case-link" href="#">Explorar arquitectura <span class="arr">→</span></a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- PROCESO -->
+<section id="proceso" class="scope" data-screen-label="04 Proceso">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow reveal"><span class="num">§ 04</span> · Proceso</div>
+        <h2 class="section-title reveal" data-delay="1">Ingeniería con<br/>propósito.</h2>
+      </div>
+      <p class="section-sub reveal" data-delay="2">Menos ruido, más resultado. Tres fases secuenciales, cero atajos. Cada una termina con un entregable medible.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <h3 class="step-title">Especificación</h3>
+        <div class="step-tagline">"Pensar antes de construir."</div>
+        <p class="step-desc">No empezamos sin un plano de obra. Definimos qué se construye, qué herramientas se orquestan y cuál es la métrica de éxito del lunes. Si no podemos especificarlo, no podemos entregarlo.</p>
+        <div class="chips"><span class="chip">Análisis</span><span class="chip">KPIs operativos</span><span class="chip">Plano de obra</span></div>
+      </div>
+      <div class="step reveal" data-delay="1">
+        <div class="step-num">02</div>
+        <h3 class="step-title">Arquitectura</h3>
+        <div class="step-tagline">"Cimentación, no decoración."</div>
+        <p class="step-desc">Construimos el cerebro antes que la interfaz. Stack moderno, integraciones que no se rompen, automatizaciones documentadas. Lighthouse 100 es el piso, no el techo.</p>
+        <div class="chips"><span class="chip">Stack moderno</span><span class="chip">Integraciones</span><span class="chip">Documentación</span></div>
+      </div>
+      <div class="step reveal" data-delay="2">
+        <div class="step-num">03</div>
+        <h3 class="step-title">Operación</h3>
+        <div class="step-tagline">"El lunes opera."</div>
+        <p class="step-desc">Entrega lista para que tu equipo trabaje mejor desde la primera mañana. Métrica acordada al inicio, validada al final. Mantenimiento evolutivo si quieres seguir.</p>
+        <div class="chips"><span class="chip">Handover</span><span class="chip">Métrica validada</span><span class="chip">Soporte evolutivo</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STACK + MANIFIESTO -->
+<section class="scope" data-screen-label="05 Stack y Manifiesto">
+  <div class="container">
+    <div class="dual">
+      <div class="divider" aria-hidden="true"></div>
+      <div class="engine reveal">
+        <div class="eyebrow"><span class="num">§ 05.A</span> · Engine</div>
+        <h3>Nuestro engine.</h3>
+        <p>Construimos sobre stacks modernos, rápidos y verificables. Cero magia, todo auditable.</p>
+        <div class="stack-grid">
+          <div class="stack-item">ASTRO</div>
+          <div class="stack-item">TAILWIND</div>
+          <div class="stack-item">TYPESCRIPT</div>
+          <div class="stack-item">OPENAI</div>
+          <div class="stack-item">SUPABASE</div>
+          <div class="stack-item">CLOUDFLARE</div>
+        </div>
+      </div>
+
+      <div class="manifesto reveal" data-delay="1">
+        <div class="manifesto-eyebrow">§ 05.B · Manifiesto 2026</div>
+        <h3>Siete principios.</h3>
+        <div class="principle"><div class="pnum">01</div><div><h4 class="ptitle">Pensamos antes de construir.</h4><p class="pbody">La IA sin plano es humo. La web sin propósito es vitrina. Ambas con criterio o ninguna.</p></div></div>
+        <div class="principle"><div class="pnum">02</div><div><h4 class="ptitle">El sistema vale más que la herramienta.</h4><p class="pbody">No sumamos tools. Orquestamos cerebros. Una sola arquitectura.</p></div></div>
+        <div class="principle"><div class="pnum">03</div><div><h4 class="ptitle">El lunes a la mañana es la métrica real.</h4><p class="pbody">Si tu equipo no opera mejor el lunes, la demo no sirvió. Todo lo demás es teatro.</p></div></div>
+        <div class="principle"><div class="pnum">04</div><div><h4 class="ptitle">Cimentación, no decoración.</h4><p class="pbody">Identidad, especificación y arquitectura primero. Color y motion después.</p></div></div>
+        <div class="principle"><div class="pnum">05</div><div><h4 class="ptitle">El detalle es el oficio.</h4><p class="pbody">Un milisegundo importa. Un píxel también. Lighthouse 100 es el piso, no el techo.</p></div></div>
+        <div class="principle"><div class="pnum">06</div><div><h4 class="ptitle">El cliente nunca orquesta.</h4><p class="pbody">Pienxe orquesta. Tú operas. Si coordinas tres proveedores, te fallamos.</p></div></div>
+        <div class="principle"><div class="pnum">07</div><div><h4 class="ptitle">No somos para todos.</h4><p class="pbody">Pienxe es para empresas que valoran el resultado, no el ruido.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="colaboracion" class="scope" data-screen-label="06 Colaboración">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow reveal"><span class="num">§ 06</span> · Modelos</div>
+        <h2 class="section-title reveal" data-delay="1">Cómo trabajamos<br/>contigo.</h2>
+      </div>
+      <p class="section-sub reveal" data-delay="2">Dos vías según la fase de tu operación. Elige la que mejor se adapte. Si no estás seguro, lo definimos en la primera llamada.</p>
+    </div>
+
+    <div class="pricing">
+      <article class="plan reveal">
+        <div class="plan-badge">Fase 1 & 2 · Proyecto único</div>
+        <h3 class="plan-name">Cimentación &<br/>Estructura</h3>
+        <p class="plan-desc">Identidad técnica y web premium para empresas que necesitan una base sólida antes de escalar.</p>
+        <ul>
+          <li><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Brand Engineering & Design System</li>
+          <li><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Web High-Performance (LCP &lt; 1s)</li>
+          <li><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Plano de obra IA inicial</li>
+          <li><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Infra Cloud + SEO técnico</li>
+          <li><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Lighthouse 100/100/100/100</li>
+        </ul>
+        <a class="cta-secondary" href="#contacto">Consultar disponibilidad <span aria-hidden="true">→</span></a>
+      </article>
+
+      <article class="plan rec reveal" data-delay="1">
+        <div class="plan-rec-tag">
+          <svg class="iso" viewBox="0 0 584 584" fill="none" aria-hidden="true"><path d="M289.904 42C297.263 50.2552 296.991 190.772 333.37 236.563C341.654 246.99 352.397 254.688 364.376 260.284C410.836 281.987 493.918 286.452 545 292.024C489.146 301.954 396.439 298.906 347.999 333.213C298.617 368.186 300.234 483.697 291.334 540.689L291.211 542C288.688 541.523 287.503 522.308 287.137 518.904C282.144 472.436 277.079 391.024 250.715 352.066C213.35 296.857 100.063 302.886 41.7987 292.348L40 292.014C263.201 266.211 267.634 272.765 289.904 42Z" fill="#02DEF0"/></svg>
+          Recomendado
+        </div>
+        <div class="plan-badge">Fase 3 & 4 · Socio estratégico</div>
+        <h3 class="plan-name">Inteligencia &<br/>Escalabilidad</h3>
+        <p class="plan-desc">Capacidad técnica mensual para orquestar agentes, automatizar flujos y evolucionar tu operación.</p>
+        <ul>
+          <li><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Orquestación de agentes IA</li>
+          <li><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Workflows operativos a medida</li>
+          <li><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Mantenimiento evolutivo</li>
+          <li><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Consultoría mensual estratégica</li>
+          <li><svg class="check" viewBox="0 0 16 16" fill="none"><path d="M3 8.5L6.5 12L13 4.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Soporte 24/7 y monitoreo</li>
+        </ul>
+        <a class="cta-primary" href="#contacto">Hablemos <span aria-hidden="true">→</span></a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contacto" class="foot" data-screen-label="07 Footer">
+  <div class="container">
+    <div class="foot-cta">
+      <div class="eyebrow reveal"><span class="num">§ 07</span> · Contacto</div>
+      <h2 class="foot-h2 reveal" data-delay="1">¿Listo para<br/>construir con criterio?</h2>
+      <div class="foot-ctas reveal" data-delay="2">
+        <a class="cta-primary" href="#">Agenda tu plano de obra <span aria-hidden="true">→</span></a>
+        <a class="cta-secondary" href="#casos">Ver casos de éxito</a>
+      </div>
+      <div class="scarcity reveal" data-delay="3">
+        <svg class="iso" viewBox="0 0 584 584" fill="none" aria-hidden="true"><path d="M289.904 42C297.263 50.2552 296.991 190.772 333.37 236.563C341.654 246.99 352.397 254.688 364.376 260.284C410.836 281.987 493.918 286.452 545 292.024C489.146 301.954 396.439 298.906 347.999 333.213C298.617 368.186 300.234 483.697 291.334 540.689L291.211 542C288.688 541.523 287.503 522.308 287.137 518.904C282.144 472.436 277.079 391.024 250.715 352.066C213.35 296.857 100.063 302.886 41.7987 292.348L40 292.014C263.201 266.211 267.634 272.765 289.904 42Z" fill="#02DEF0"/></svg>
+        <span>Cupos limitados. Solo aceptamos 2 proyectos por trimestre.</span>
+      </div>
+    </div>
+
+    <div class="foot-cols">
+      <div class="foot-about">
+        <a class="brand" href="#top" aria-label="Pienxe">
+          <svg class="wordmark-lg" viewBox="0 0 998 349" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M84.5114 108.373C107.541 106.366 130.468 113.247 148.586 127.604C167.534 142.607 180.732 165.311 183.308 189.431C186.172 214.134 178.757 238.93 162.801 258.004C147.337 276.862 124.987 288.769 100.71 291.083C77.0877 293.273 53.561 286.019 35.2741 270.907C31.9552 268.251 29.0709 265.34 26.026 262.379C25.483 290.514 25.8651 319.972 25.8541 348.208L0.190087 348.123C-0.18489 338.418 0.109915 326.715 0.113915 316.857L0.131493 258.729L0.078759 219.896C0.0617591 207.435 -0.432454 193.624 2.17251 181.517C5.36451 167.039 11.9099 153.512 21.2819 142.024C37.1419 122.336 58.6651 111.164 83.6481 108.496C83.9359 108.455 84.2236 108.414 84.5114 108.373ZM157.376 194.004C154.134 158.084 122.418 131.573 86.4928 134.751C50.4758 137.937 23.8815 169.75 27.1325 205.762C30.3836 241.773 62.2448 268.309 98.2497 264.994C134.164 261.687 160.618 229.924 157.376 194.004Z" fill="#FEFEFE"/><path d="M370.756 112.771C374.631 112.242 382.734 112.308 386.658 112.593C408.698 114.273 429.159 124.675 443.503 141.493C461.307 162.115 466.032 184.219 464.019 210.613L321.068 210.674C323.175 219.354 326.341 226.947 331.781 234.123C341.347 246.789 355.58 255.107 371.311 257.223C388.966 259.631 404.383 254.794 418.35 244.099C422.118 240.972 424.576 238.241 427.925 234.641C435.549 238.42 443.114 242.317 450.615 246.332C450.007 247.267 449.362 248.179 448.684 249.065C419.505 287.618 365.074 295.244 326.931 265.307C309.049 251.149 297.488 230.494 294.771 207.848C292.148 184.982 298.823 162.022 313.297 144.128C327.482 126.407 348.179 115.112 370.756 112.771ZM438.172 185.335C429.539 154.164 405.513 135.352 372.67 138.459C345.336 142.448 328.023 158.867 320.901 185.338L387.41 185.367L438.172 185.335Z" fill="#FEFEFE"/><path d="M903.531 112.78C907.42 112.226 915.76 112.292 919.71 112.585C941.87 114.263 962.421 124.823 976.681 141.869C993.811 161.939 998.951 184.874 996.811 210.621L853.99 210.689C855.891 219.398 859.674 227.587 865.071 234.68C874.751 247.225 889.031 255.39 904.75 257.365C922.04 259.524 937.471 254.734 951.091 244.17C954.501 241.427 957.62 237.924 960.63 234.718C968.39 238.398 976.04 242.296 983.58 246.408C982.95 247.339 982.291 248.253 981.601 249.145C953.111 286.746 900.08 294.975 862.034 266.917C843.562 253.295 830.565 231.552 827.757 208.733C824.842 185.64 831.466 162.355 846.099 144.254C860.238 126.474 880.931 115.131 903.531 112.78ZM970.941 185.369C963.381 155.779 936.681 133.42 905.321 138.436C877.841 142.931 861.135 158.703 853.661 185.378L920.83 185.358L970.941 185.369Z" fill="#FEFEFE"/><path d="M787.248 112.523C797.638 112.435 808.18 112.556 818.583 112.582C812.213 119.819 802.273 133.895 796.297 141.841L754.258 197.662C760.579 206.78 769.31 217.689 776.098 226.682L818.11 282.609C814.347 283.255 791.76 282.956 787.182 282.949C784.945 279.704 782.281 276.139 779.832 273.015C765.926 255.279 753.043 235.592 738.513 218.461C732.55 225.438 725.839 234.861 720.251 242.308L689.828 282.942L658.75 282.838C666.345 273.467 674.532 261.964 681.847 252.163C695.367 233.975 708.978 215.855 722.68 197.804C702.933 169.987 679.305 140.218 658.662 112.582L689.741 112.518C705.305 133.232 722.507 157.133 738.657 177.141L787.248 112.523Z" fill="#FEFEFE"/><path d="M560.565 110.948C580.12 109.75 600.339 118.07 614.004 131.961C623.164 141.267 629.651 152.867 632.784 165.544C635.816 177.757 634.93 201.255 634.925 214.561L634.821 282.823L609.266 282.949L609.306 213.21C609.322 204.018 609.906 182.907 608.415 174.581C607.126 167.355 604.143 160.537 599.712 154.686C590.979 143.322 580.49 138.796 566.691 136.979L565.794 136.964C552.485 136.857 540.191 140.924 530.708 150.511C524.582 156.712 520.372 164.547 518.581 173.077C516.64 181.893 517.364 203.189 517.367 213.168L517.385 282.842L492.06 282.878C490.947 251.708 492.797 219.579 491.923 188.39C490.74 146.135 517.975 114.193 560.565 110.948Z" fill="#FEFEFE"/><path d="M230.293 108.246L256.016 108.072L255.928 282.812L230.258 282.841L230.293 108.246Z" fill="#FEFEFE"/><path d="M242.307 0C243.735 1.60151 243.682 28.8617 250.742 37.7451C252.35 39.768 254.434 41.2615 256.759 42.3471C265.775 46.5575 281.898 47.4238 291.811 48.5046C280.972 50.431 262.981 49.8397 253.581 56.4953C243.998 63.28 244.312 85.6891 242.585 96.7457L242.561 97C242.071 96.9074 241.841 93.1798 241.77 92.5194C240.801 83.5045 239.818 67.7107 234.702 60.1528C227.451 49.4423 205.467 50.6119 194.16 48.5674L193.811 48.5026C237.125 43.497 237.985 44.7683 242.307 0Z" fill="#02DEF0"/></svg>
+        </a>
+        <p>Agencia boutique premium tecnológica. Brand engineering, web high-performance y orquestación de IA. Hamburgo.</p>
+      </div>
+      <div>
+        <h4>Servicios</h4>
+        <ul><li><a href="#servicios">Cimentación</a></li><li><a href="#servicios">Estructura</a></li><li><a href="#servicios">Inteligencia</a></li><li><a href="#servicios">Escalabilidad</a></li></ul>
+      </div>
+      <div>
+        <h4>Pienxe</h4>
+        <ul><li><a href="#casos">Casos</a></li><li><a href="#proceso">Cómo trabajamos</a></li><li><a href="#colaboracion">Colaboración</a></li><li><a href="#">Sobre nosotros</a></li></ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul><li><a href="#">Aviso legal</a></li><li><a href="#">Privacidad</a></li><li><a href="#">Cookies</a></li><li><a href="#">LinkedIn</a></li></ul>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <div class="left"><span class="dot-live"></span><span>Estado: Operativo</span></div>
+      <div>© 2026 PIENXE · Built in Hamburg</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Intersection observer reveals
+const io = new IntersectionObserver((entries)=>{
+  for(const e of entries){
+    if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+  }
+},{threshold:0.12, rootMargin:"0px 0px -8% 0px"});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// Hero parallax blobs (cheap)
+const ga = document.querySelector('.glow-a');
+const gb = document.querySelector('.glow-b');
+let mx=0,my=0,cx=0,cy=0;
+window.addEventListener('pointermove',(e)=>{
+  const r = window.innerWidth, h = window.innerHeight;
+  mx = (e.clientX/r - .5)*30;
+  my = (e.clientY/h - .5)*30;
+});
+function tick(){
+  cx += (mx-cx)*0.05; cy += (my-cy)*0.05;
+  if(ga) ga.style.transform = `translate(${cx}px, ${cy}px)`;
+  if(gb) gb.style.transform = `translate(${-cx}px, ${-cy}px)`;
+  requestAnimationFrame(tick);
+}
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches) tick();
+
+// Smooth scroll anchors
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',(e)=>{
+    const id = a.getAttribute('href');
+    if(id.length>1){
+      const el = document.querySelector(id);
+      if(el){ e.preventDefault(); window.scrollTo({top: el.offsetTop - 56, behavior:'smooth'}); }
+    }
+  });
+});
+
+// Hero foot progress = scroll progress
+const prog = document.querySelector('.hero-foot .progress i');
+if(prog){
+  window.addEventListener('scroll',()=>{
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const p = Math.min(100, Math.max(0, window.scrollY/max*100));
+    prog.style.width = p + '%';
+  });
+}
+</script>
+</body>
+</html>
