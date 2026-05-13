@@ -36,3 +36,6 @@ Thumbs.db
 # Lighthouse / auditorías
 .lighthouseci/
 lhci_reports/
+
+# Project assets (heavy files)
+assets/
