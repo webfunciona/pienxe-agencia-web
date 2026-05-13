@@ -1,0 +1,64 @@
+---
+import { getLangFromUrl, useTranslations } from '~/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+<section id={t('anchor.proceso')} class="scope" data-screen-label={`04 ${t('nav.process')}`}>
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow reveal"><span class="num">§ 04</span> · {t('nav.process')}</div>
+        <h2 class="section-title reveal" data-delay="1" set:html={t('process.title')} />
+      </div>
+      <p class="section-sub reveal" data-delay="2">{t('process.subtitle')}</p>
+    </div>
+
+    <div class="steps">
+      <div class="step reveal">
+        <div class="step-num">01</div>
+        <h3 class="step-title">{t('process.step1.title')}</h3>
+        <div class="step-tagline">"{t('process.step1.tagline')}"</div>
+        <p class="step-desc">{t('process.step1.desc')}</p>
+        <div class="chips">
+          {t('process.step1.details').split('|').map((detail) => (
+            <span class="chip">{detail}</span>
+          ))}
+        </div>
+      </div>
+      <div class="step reveal" data-delay="1">
+        <div class="step-num">02</div>
+        <h3 class="step-title">{t('process.step2.title')}</h3>
+        <div class="step-tagline">"{t('process.step2.tagline')}"</div>
+        <p class="step-desc">{t('process.step2.desc')}</p>
+        <div class="chips">
+          {t('process.step2.details').split('|').map((detail) => (
+            <span class="chip">{detail}</span>
+          ))}
+        </div>
+      </div>
+      <div class="step reveal" data-delay="2">
+        <div class="step-num">03</div>
+        <h3 class="step-title">{t('process.step3.title')}</h3>
+        <div class="step-tagline">"{t('process.step3.tagline')}"</div>
+        <p class="step-desc">{t('process.step3.desc')}</p>
+        <div class="chips">
+          {t('process.step3.details').split('|').map((detail) => (
+            <span class="chip">{detail}</span>
+          ))}
+        </div>
+      </div>
+      <div class="step reveal" data-delay="3">
+        <div class="step-num">04</div>
+        <h3 class="step-title">{t('process.step4.title')}</h3>
+        <div class="step-tagline">"{t('process.step4.tagline')}"</div>
+        <p class="step-desc">{t('process.step4.desc')}</p>
+        <div class="chips">
+          {t('process.step4.details').split('|').map((detail) => (
+            <span class="chip">{detail}</span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

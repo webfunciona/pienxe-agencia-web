@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;700;900&amp;family=Outfit:wght@600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ec5b13",
+                        "cyan-accent": "#00f5ff",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#030303",
+                    },
+                    fontFamily: {
+                        "display": ["Public Sans", "sans-serif"],
+                        "outfit": ["Outfit", "sans-serif"],
+                        "mono": ["JetBrains Mono", "monospace"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+    }
+.grid-bg {
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px
+    }
+.noise-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0.03;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuD26Ydo9ZNOVpJzKMkDLy63ivCs9_redbuEwh9-39eYQd9XvJwMs8IVJzoMmX7Shz6dk-tj9Mscxw7g2_okwjfr82qeX4gWD9shLbs9j1KrLxfL8lBJqrPJ-dl4yptnL-aL_shhFzOfcgp2g8RWv3y-9fm_9kYgTCQ0urG6nGR3Y5NK1wurN9UoGZUL3x-Yos-4M5xRjXBjN6EGso7zDWKC_rWuWHqSRBueBudDR0rl2oaAHH28ocQFT4-3GkukuOBTeoJlVd_rvc4)
+    }
+.cyan-glow:hover {
+    box-shadow: 0 0 20px rgba(0, 245, 255, 0.4);
+    transition: all 0.3s ease
+    }
+@keyframes blink {
+    0%, 100% {
+        opacity: 1;
+        } 50% {
+        opacity: 0.3;
+        }
+    }
+.blinking-dot {
+    animation: blink 2s infinite
+    }
+.asymmetric-star {
+    clip-path: polygon(50% 0%, 61% 35%, 100% 50%, 61% 65%, 50% 100%, 39% 65%, 0% 50%, 39% 35%)
+    }</style>
+</head>
+<body class="bg-[#030303] text-white font-display selection:bg-cyan-accent selection:text-[#030303]">
+<div class="noise-overlay"></div>
+<!-- Hero Section Container -->
+<main class="relative min-h-screen w-full flex flex-col grid-bg">
+<!-- Header -->
+<header class="w-full flex items-center justify-between px-8 py-6 border-b border-white/10 backdrop-blur-sm z-50">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<div class="size-5 bg-cyan-accent asymmetric-star"></div>
+<span class="text-xl font-bold tracking-tight uppercase">Pienxe</span>
+</div>
+<div class="hidden md:flex items-center gap-4 text-[10px] font-mono tracking-widest text-white/40 uppercase">
+<span>53.5511° N, 9.9937° E</span>
+<span class="flex items-center gap-1">
+<span class="text-cyan-accent blinking-dot">●</span>
+<span class="text-white/60">Active_Systems</span>
+</span>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<nav class="hidden lg:flex gap-8 text-xs font-mono uppercase tracking-widest text-white/60">
+<a class="hover:text-cyan-accent transition-colors" href="#">Laboratory</a>
+<a class="hover:text-cyan-accent transition-colors" href="#">Engineering</a>
+<a class="hover:text-cyan-accent transition-colors" href="#">Output</a>
+</nav>
+<div class="h-4 w-px bg-white/20 hidden lg:block"></div>
+<button class="text-xs font-mono uppercase tracking-widest hover:text-cyan-accent transition-colors">Menu</button>
+</div>
+</header>
+<!-- Main Hero Content -->
+<div class="flex-1 flex flex-col lg:flex-row w-full max-w-[1600px] mx-auto">
+<!-- Left Side: Massive Heading -->
+<section class="flex-1 flex flex-col justify-end p-8 lg:p-16 pb-24 lg:pb-32">
+<div class="max-w-3xl">
+<div class="flex items-center gap-2 mb-8">
+<span class="text-cyan-accent font-mono text-xs tracking-tighter">[ SYSTEM_READY ]</span>
+<div class="h-px w-12 bg-cyan-accent/30"></div>
+</div>
+<h1 class="font-outfit text-[12vw] lg:text-[8vw] leading-[0.9] font-semibold tracking-[-0.03em] mb-12">
+                        Piensa<br/>
+<span class="text-white/20">antes de</span><br/>
+                        construir.
+                    </h1>
+<div class="flex flex-wrap gap-4">
+<button class="bg-cyan-accent text-[#030303] px-10 py-4 rounded-none font-mono text-sm uppercase font-bold cyan-glow transition-all">
+                            Hablemos
+                        </button>
+<button class="border border-white/20 hover:border-white/60 px-10 py-4 rounded-none font-mono text-sm uppercase transition-all">
+                            Ver casos
+                        </button>
+</div>
+</div>
+</section>
+<!-- Right Side: Bento Metrics Panel -->
+<section class="w-full lg:w-[450px] border-l border-white/10 flex flex-col">
+<div class="p-8 border-b border-white/10 flex-1 flex flex-col justify-center">
+<div class="mb-12">
+<h3 class="font-mono text-xs text-white/40 uppercase tracking-widest mb-2">Laboratory Output</h3>
+<p class="text-sm text-white/60 max-w-[280px]">High-fidelity engineering solutions for complex computational systems.</p>
+</div>
+<!-- Metrics Bento -->
+<div class="grid grid-cols-1 gap-px bg-white/10 border border-white/10">
+<!-- Metric 1 -->
+<div class="bg-[#030303] p-6 group">
+<span class="font-mono text-[10px] text-white/30 uppercase tracking-widest block mb-4">Availability_Index</span>
+<div class="flex items-baseline gap-2">
+<span class="font-mono text-4xl font-medium">99.9%</span>
+<span class="font-mono text-xs text-cyan-accent uppercase">Uptime</span>
+</div>
+</div>
+<!-- Metric 2 -->
+<div class="bg-[#030303] p-6">
+<span class="font-mono text-[10px] text-white/30 uppercase tracking-widest block mb-4">Development_Phase</span>
+<div class="flex items-baseline gap-2">
+<span class="font-mono text-4xl font-medium">0-1</span>
+<span class="font-mono text-xs text-cyan-accent uppercase">Engineering</span>
+</div>
+</div>
+<!-- Metric 3 -->
+<div class="bg-[#030303] p-6">
+<span class="font-mono text-[10px] text-white/30 uppercase tracking-widest block mb-4">Delivery_Model</span>
+<div class="flex items-baseline gap-2">
+<span class="font-mono text-4xl font-medium">Boutique</span>
+<span class="font-mono text-xs text-cyan-accent uppercase">Scale</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Technical Footer of Sidebar -->
+<div class="p-8 bg-white/5 flex items-center justify-between">
+<div class="font-mono text-[10px] text-white/30 space-y-1">
+<p>#030303 | Grid_Active</p>
+<p>Noise_Overlay_Subtle</p>
+</div>
+<div class="size-8 flex items-center justify-center">
+<div class="w-full h-px bg-white/10 relative">
+<div class="absolute inset-0 bg-cyan-accent/40 blur-[2px]"></div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Decorative Elements -->
+<div class="absolute bottom-10 left-10 pointer-events-none hidden xl:block">
+<div class="flex gap-1">
+<div class="size-1 bg-white/20"></div>
+<div class="size-1 bg-white/20"></div>
+<div class="size-1 bg-cyan-accent"></div>
+</div>
+</div>
+<div class="absolute top-1/2 right-8 -translate-y-1/2 flex flex-col gap-12 items-center pointer-events-none opacity-20">
+<span class="font-mono text-[10px] rotate-90 origin-center whitespace-nowrap tracking-[0.5em] uppercase">Architecture / Precision / Logic</span>
+</div>
+</main>
+<!-- Visual Texture Element -->
+<div class="fixed bottom-0 left-0 w-full h-1/4 bg-gradient-to-t from-cyan-accent/5 to-transparent pointer-events-none"></div>
+</body></html>

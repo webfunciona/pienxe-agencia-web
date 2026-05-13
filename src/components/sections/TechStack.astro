@@ -1,0 +1,89 @@
+---
+import { getLangFromUrl, useTranslations } from '~/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+<section class="scope" data-screen-label={`05 ${t('nav.process')}`}>
+  <div class="container">
+    <div class="dual">
+      <div class="divider" aria-hidden="true"></div>
+      <div class="engine reveal">
+        <div class="eyebrow"><span class="num">§ 05.A</span> · {t('tech.eyebrow')}</div>
+        <h3>{t('tech.title')}</h3>
+        <p>{t('tech.description')}</p>
+        <div class="stack-grid">
+          <div class="stack-item">HERMES</div>
+          <div class="stack-item">OPENCLAW</div>
+          <div class="stack-item">LANGGRAPH</div>
+          <div class="stack-item">PINECONE</div>
+          <div class="stack-item">REACT</div>
+          <div class="stack-item">ASTRO</div>
+          <div class="stack-item">TYPESCRIPT</div>
+          <div class="stack-item">DOCKER</div>
+          <div class="stack-item">POSTGRESQL</div>
+          <div class="stack-item">CLOUDFLARE</div>
+          <div class="stack-item">SUPABASE</div>
+          <div class="stack-item">NODE.JS</div>
+        </div>
+      </div>
+
+      <div class="manifesto reveal" data-delay="1">
+        <div class="manifesto-header">
+          <div class="manifesto-eyebrow">§ 05.B · {t('manifesto.badge')}</div>
+          <h3>{t('tech.principles')}</h3>
+        </div>
+        
+        <div class="principles-scattered">
+          <div class="principle-box p-1">
+            <div class="node-dot"></div>
+            <div class="node-content"><h4 class="ptitle">{t('manifesto.0.title')}</h4><p class="pbody">{t('manifesto.0.text')}</p></div>
+          </div>
+          <div class="principle-box p-2">
+            <div class="node-dot"></div>
+            <div class="node-content"><h4 class="ptitle">{t('manifesto.1.title')}</h4><p class="pbody">{t('manifesto.1.text')}</p></div>
+          </div>
+          <div class="principle-box p-3">
+            <div class="node-dot"></div>
+            <div class="node-content"><h4 class="ptitle">{t('manifesto.2.title')}</h4><p class="pbody">{t('manifesto.2.text')}</p></div>
+          </div>
+          <div class="principle-box p-4">
+            <div class="node-dot"></div>
+            <div class="node-content"><h4 class="ptitle">{t('manifesto.3.title')}</h4><p class="pbody">{t('manifesto.3.text')}</p></div>
+          </div>
+          <div class="principle-box p-5">
+            <div class="node-dot"></div>
+            <div class="node-content"><h4 class="ptitle">{t('manifesto.4.title')}</h4><p class="pbody">{t('manifesto.4.text')}</p></div>
+          </div>
+          <div class="principle-box p-6">
+            <div class="node-dot"></div>
+            <div class="node-content"><h4 class="ptitle">{t('manifesto.5.title')}</h4><p class="pbody">{t('manifesto.5.text')}</p></div>
+          </div>
+          <div class="principle-box p-7">
+            <div class="node-dot"></div>
+            <div class="node-content"><h4 class="ptitle">{t('manifesto.6.title')}</h4><p class="pbody">{t('manifesto.6.text')}</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+  const observerOptions = {
+    root: null,
+    rootMargin: '0px',
+    threshold: 0.15
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, observerOptions);
+
+  const boxes = document.querySelectorAll('.principle-box');
+  boxes.forEach(box => observer.observe(box));
+</script>

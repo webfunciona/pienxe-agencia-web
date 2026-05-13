@@ -1,0 +1,129 @@
+---
+import '../styles/global.css';
+import '../styles/landing.css';
+import { getLangFromUrl, useTranslations } from '~/i18n/utils';
+import Navbar from '~/components/sections/Navbar.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  /** URL canónica completa. Si se omite, se calcula desde Astro.url. */
+  canonical?: string;
+  /** Imagen Open Graph (1200×630). Ruta absoluta o pública. */
+  ogImage?: string;
+  /** Idioma del documento. Si se omite, se detecta de la URL. */
+  lang?: 'es' | 'en' | 'de';
+  /** Bloquea la indexación. Útil para drafts y staging. */
+  noindex?: boolean;
+  /** Clases adicionales para el elemento <main> */
+  mainClass?: string;
+}
+
+const currentLang = Astro.props.lang || getLangFromUrl(Astro.url);
+const t = useTranslations(currentLang);
+
+const {
+  title,
+  description,
+  canonical,
+  ogImage = '/og-default.png',
+  noindex = false,
+  mainClass = '',
+} = Astro.props;
+
+const lang = currentLang;
+const siteName = 'Pienxe';
+const siteUrl = Astro.site?.toString().replace(/\/$/, '') ?? 'https://pienxe.com';
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, siteUrl).toString();
+const fullTitle = title.includes(siteName) ? title : `${title} — ${siteName}`;
+const ogImageUrl = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage}`;
+
+// JSON-LD organización — datos canónicos de la marca
+const orgJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Pienxe',
+  url: siteUrl,
+  logo: `${siteUrl}/logo/wordmark.svg`,
+  description: t('site.description'),
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'Hamburg',
+    addressCountry: 'DE',
+  },
+  sameAs: [],
+};
+---
+
+<!doctype html>
+<html lang={lang} data-theme="dark" class="bg-bg text-fg">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="generator" content={Astro.generator} />
+
+    {/* Color del UI del navegador — coherente con deep black */}
+    <meta name="theme-color" content="#030303" />
+    <meta name="color-scheme" content="dark" />
+
+    {/* SEO básico */}
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    {/* Open Graph */}
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content={lang === 'es' ? 'es_ES' : lang === 'de' ? 'de_DE' : 'en_US'} />
+
+    {/* Twitter */}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    {/* Iconos */}
+    <link rel="icon" type="image/svg+xml" href="/logo/isotipo.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    {/* Google Fonts — Premium Typography */}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    {/* Preload de fuentes locales (descomentar cuando se añadan los .woff2 a /public/fonts) */}
+    {/*
+    <link rel="preload" href="/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/GeneralSans-Variable.woff2" as="font" type="font/woff2" crossorigin />
+    */}
+
+    {/* JSON-LD organización */}
+    <script type="application/ld+json" set:html={JSON.stringify(orgJsonLd)} />
+
+    {/* Slot para SEO/meta extra desde páginas concretas */}
+    <slot name="head" />
+  </head>
+
+  <body id="top" class="min-h-dvh flex flex-col bg-bg text-fg font-body antialiased selection:bg-accent selection:text-bg">
+
+    <a
+      href="#contenido"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-md focus:bg-accent focus:px-4 focus:py-2 focus:text-bg focus:font-medium"
+    >
+      {t('nav.skip')}
+    </a>
+
+    <Navbar />
+
+    <main id="contenido" class={`flex-grow flex flex-col ${mainClass}`}>
+      <slot />
+    </main>
+  </body>
+</html>
