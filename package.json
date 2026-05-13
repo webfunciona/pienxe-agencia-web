@@ -8,13 +8,16 @@
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro check && astro build",
-    "preview": "astro preview",
+    "preview": "npm run build && wrangler dev",
     "astro": "astro",
     "check": "astro check",
-    "lighthouse": "lhci autorun --collect.staticDistDir=./dist"
+    "lighthouse": "lhci autorun --collect.staticDistDir=./dist",
+    "deploy": "npm run build && wrangler deploy",
+    "cf-typegen": "wrangler types"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
+    "@astrojs/cloudflare": "11",
     "@astrojs/sitemap": "^3.2.1",
     "@astrojs/tailwind": "^5.1.4",
     "astro": "^4.16.18",
@@ -24,7 +27,8 @@
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
-    "lightningcss": "^1.32.0"
+    "lightningcss": "^1.32.0",
+    "wrangler": "^4.90.1"
   },
   "engines": {
     "node": ">=20.0.0"
