@@ -1,0 +1,50 @@
+---
+---
+<script>
+// Intersection observer reveals
+const io = new IntersectionObserver((entries)=>{
+  for(const e of entries){
+    if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+  }
+},{threshold:0.12, rootMargin:"0px 0px -8% 0px"});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// Hero parallax blobs (cheap)
+const ga = document.querySelector('.glow-a') as HTMLElement | null;
+const gb = document.querySelector('.glow-b') as HTMLElement | null;
+let mx=0,my=0,cx=0,cy=0;
+window.addEventListener('pointermove',(e)=>{
+  const r = window.innerWidth, h = window.innerHeight;
+  mx = (e.clientX/r - .5)*30;
+  my = (e.clientY/h - .5)*30;
+});
+function tick(){
+  cx += (mx-cx)*0.05; cy += (my-cy)*0.05;
+  if(ga) ga.style.transform = `translate(${cx}px, ${cy}px)`;
+  if(gb) gb.style.transform = `translate(${-cx}px, ${-cy}px)`;
+  requestAnimationFrame(tick);
+}
+if(!matchMedia('(prefers-reduced-motion: reduce)').matches) tick();
+
+// Smooth scroll anchors
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',(e)=>{
+    const id = a.getAttribute('href');
+    if(id && id.length > 1){
+      const el = document.querySelector(id) as HTMLElement | null;
+      if(el){ e.preventDefault(); window.scrollTo({top: el.offsetTop - 56, behavior:'smooth'}); }
+    }
+  });
+});
+
+// Hero foot progress = scroll progress (localized to hero height)
+const prog = document.querySelector('.hero-foot .progress i') as HTMLElement | null;
+const hero = document.querySelector('.hero') as HTMLElement | null;
+if(prog && hero){
+  window.addEventListener('scroll',()=>{
+    const heroHeight = hero.offsetHeight;
+    const p = Math.min(100, Math.max(0, (window.scrollY / (heroHeight * 0.8)) * 100));
+    prog.style.width = p + '%';
+  });
+}
+</script>

@@ -1,0 +1,32 @@
+{
+  "name": "pienxe-web",
+  "type": "module",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Pienxe — sitio web boutique premium. SDD + Astro + Tailwind. Performance 100/100.",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "astro check",
+    "lighthouse": "lhci autorun --collect.staticDistDir=./dist"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/sitemap": "^3.2.1",
+    "@astrojs/tailwind": "^5.1.4",
+    "astro": "^4.16.18",
+    "gsap": "^3.15.0",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "lightningcss": "^1.32.0"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

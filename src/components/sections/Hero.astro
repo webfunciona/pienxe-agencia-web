@@ -1,0 +1,81 @@
+---
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '../../i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+---
+<header id="top" class="hero" data-screen-label={`01 ${t('nav.home')}`}>
+  <div class="hero-bg">
+    <div class="col-lines" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="glow-a"></div>
+    <div class="glow-b"></div>
+  </div>
+
+  <div class="hero-visual" aria-hidden="true">
+    <div class="visual-hands">
+      <img src="/assets/brand/visuals/creation_vector_final.svg" alt="" />
+    </div>
+    <div class="visual-isotype">
+      <svg viewBox="0 0 584 584" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M289.904 42C297.263 50.2552 296.991 190.772 333.37 236.563C341.654 246.99 352.397 254.688 364.376 260.284C410.836 281.987 493.918 286.452 545 292.024C489.146 301.954 396.439 298.906 347.999 333.213C298.617 368.186 300.234 483.697 291.334 540.689L291.211 542C288.688 541.523 287.503 522.308 287.137 518.904C282.144 472.436 277.079 391.024 250.715 352.066C213.35 296.857 100.063 302.886 41.7987 292.348L40 292.014C263.201 266.211 267.634 272.765 289.904 42Z" fill="#02DEF0"/>
+      </svg>
+    </div>
+  </div>
+
+
+  <div class="hero-meta">
+    <div class="left"><span class="dot-live" aria-hidden="true"></span><span>{t('hero.meta.status')}</span></div>
+    <div class="right">
+      <span>LAT 53.5511° N</span>
+      <span>LON 9.9937° E</span>
+      <span>{t('hero.meta.version')}</span>
+    </div>
+  </div>
+
+  <div class="hero-grid">
+    <div>
+      <h1 class="hero-h1">
+        <span class="line"><span>{t('hero.title').split(' ')[0]}</span></span>
+        <span class="line"><span>{t('hero.title').split(' ').slice(1, -1).join(' ')}</span></span>
+        <span class="line"><span>{t('hero.title').split(' ').slice(-1)}<span class="dot">.</span></span></span>
+      </h1>
+      <div class="hero-sep"></div>
+      <p class="hero-lead" set:html={t('hero.subtitle')}></p>
+      <div class="hero-ctas">
+        <a class="cta-primary" href={translatePath('contact')}>{t('hero.cta.primary')} <span aria-hidden="true">→</span></a>
+        <a class="cta-secondary" href={translatePath('#cases')}>{t('hero.cta.secondary')}</a>
+      </div>
+      <p class="hero-promise">{t('hero.promise')}</p>
+    </div>
+
+    <div class="hero-right">
+
+      <aside class="lab" aria-label={t('hero.lab.label')}>
+        <div class="lab-label"><span>{t('hero.lab.label')}</span><span>· 04</span></div>
+        <div class="lab-row">
+          <div class="lab-val">99.9<span style="font-size:24px;letter-spacing:0">%</span></div>
+          <div class="lab-key">{t('hero.lab.uptime')}</div>
+        </div>
+        <div class="lab-row">
+          <div class="lab-val">0—1</div>
+          <div class="lab-key">{t('hero.lab.cycle')}</div>
+        </div>
+        <div class="lab-row">
+          <div class="lab-val">∞</div>
+          <div class="lab-key">{t('hero.lab.scale')}</div>
+        </div>
+        <div class="lab-row" style="border:0;padding-bottom:0">
+          <div class="lab-key" style="margin-bottom:10px">{t('hero.lab.capacity')}</div>
+          <div class="lab-bar"><i></i></div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="hero-foot">
+    <span>01 / 07</span>
+    <div class="progress"><i></i></div>
+    <span class="scroll-ind"><svg class="iso" viewBox="0 0 584 584" fill="none" aria-hidden="true"><path d="M289.904 42C297.263 50.2552 296.991 190.772 333.37 236.563C341.654 246.99 352.397 254.688 364.376 260.284C410.836 281.987 493.918 286.452 545 292.024C489.146 301.954 396.439 298.906 347.999 333.213C298.617 368.186 300.234 483.697 291.334 540.689L291.211 542C288.688 541.523 287.503 522.308 287.137 518.904C282.144 472.436 277.079 391.024 250.715 352.066C213.35 296.857 100.063 302.886 41.7987 292.348L40 292.014C263.201 266.211 267.634 272.765 289.904 42Z" fill="#02DEF0"/></svg> {t('hero.scroll')}</span>
+  </div>
+</header>

@@ -1,0 +1,132 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   PIENXE — Estilos globales
+   Cargar UNA sola vez desde BaseLayout. No usar @import en componentes.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ──────────────────────────────────────────────
+   Custom properties — espejo de tailwind.config
+   Sirven para CSS puro fuera de utilidades Tailwind.
+   ────────────────────────────────────────────── */
+:root {
+  --color-bg: #030303; /* Obsidian Black */
+  --color-fg: #FFFFFF; /* Star White */
+  --color-accent: #02DEF0; /* Electric Cyan */
+  --color-fg-muted: #849395;
+  --color-surface: #111111;
+  --color-border: rgba(255, 255, 255, 0.05);
+  --color-grid: rgba(255, 255, 255, 0.05);
+
+  --font-display: "Outfit", system-ui, sans-serif;
+  --font-body: "Outfit", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --ease-premium: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ──────────────────────────────────────────────
+   Reset y base
+   ────────────────────────────────────────────── */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-family: var(--font-body);
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    font-feature-settings: "ss01", "cv11", "calt";
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 200ms var(--ease-premium);
+  }
+
+  a:hover {
+    color: var(--color-accent);
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ──────────────────────────────────────────────
+   Componentes utilitarios Pienxe (Stitch derived)
+   ────────────────────────────────────────────── */
+@layer components {
+
+
+
+  .cyan-glow:hover {
+    box-shadow: 0 0 30px rgba(2, 222, 240, 0.4);
+    transition: all 0.3s var(--ease-premium);
+  }
+
+  .blinking-dot {
+    animation: blink 2s infinite;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .asymmetric-star {
+    clip-path: polygon(50% 0%, 61% 35%, 100% 50%, 61% 65%, 50% 100%, 39% 65%, 0% 50%, 39% 35%);
+  }
+
+  .bento-card {
+    @apply bg-surface border border-border p-6 flex flex-col justify-between transition-all duration-300;
+  }
+}
+

@@ -1,0 +1,74 @@
+---
+/**
+ * Button.astro — Botón canónico Pienxe.
+ *
+ * Renders como <a> si se pasa href, como <button> si no.
+ * Spec completa: DESIGN_SYSTEM.md §4
+ *
+ * Variants:
+ *   "primary"   → fondo cyan #02DEF0, texto negro, hover brillo +10%
+ *   "secondary" → transparente, borde hairline, hover borde blanco
+ *
+ * Sizes:
+ *   "sm" → px-4 py-2 text-xs
+ *   "md" → px-6 py-3 text-sm  (default)
+ *   "lg" → px-8 py-4 text-base
+ */
+
+interface Props {
+  variant?: 'primary' | 'secondary';
+  size?: 'sm' | 'md' | 'lg';
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
+  class?: string;
+}
+
+const {
+  variant = 'primary',
+  size = 'md',
+  href,
+  type = 'button',
+  disabled = false,
+  class: className = '',
+} = Astro.props;
+
+const base = [
+  'inline-flex items-center justify-center gap-2',
+  'font-mono uppercase tracking-widest text-[10px] rounded-none select-none',
+  'transition-all duration-300',
+  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+  'disabled:pointer-events-none disabled:opacity-40',
+].join(' ');
+
+const variants: Record<string, string> = {
+  primary:   'bg-accent text-bg hover:brightness-110',
+  secondary: 'bg-transparent text-fg border border-border hover:border-fg',
+};
+
+const sizes: Record<string, string> = {
+  sm: 'px-4 py-2 text-xs',
+  md: 'px-6 py-3 text-sm',
+  lg: 'px-8 py-4 text-base',
+};
+
+const classes = [base, variants[variant], sizes[size], className]
+  .filter(Boolean)
+  .join(' ');
+---
+
+{
+  href ? (
+    <a
+      href={href}
+      class={classes}
+      {...(disabled ? { 'aria-disabled': 'true', tabindex: '-1' } : {})}
+    >
+      <slot />
+    </a>
+  ) : (
+    <button {type} {disabled} class={classes}>
+      <slot />
+    </button>
+  )
+}

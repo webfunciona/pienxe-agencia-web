@@ -1,0 +1,24 @@
+---
+import { languages } from '~/i18n/ui';
+import { getLangFromUrl, useTranslatedPath } from '~/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const translatePath = useTranslatedPath(lang);
+
+const filteredLanguages = Object.entries(languages);
+---
+
+<div class="flex items-center gap-2 px-3 py-1 bg-white/5 border border-white/10 rounded-full">
+  {filteredLanguages.map(([code, label]) => (
+    <a
+      href={translatePath('/', code)}
+      class={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md transition-all ${
+        lang === code 
+          ? 'bg-accent text-bg shadow-[0_0_10px_rgba(2,222,240,0.3)]' 
+          : 'text-fg/40 hover:text-white'
+      }`}
+    >
+      {code}
+    </a>
+  ))}
+</div>

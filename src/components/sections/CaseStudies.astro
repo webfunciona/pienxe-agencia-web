@@ -1,0 +1,101 @@
+---
+import { getLangFromUrl, useTranslations, useTranslatedPath } from '~/i18n/utils';
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+---
+<section id={t('anchor.casos')} class="scope" data-screen-label={`03 ${t('nav.cases')}`}>
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow reveal"><span class="num">§ 03</span> · {t('nav.cases')}</div>
+        <h2 class="section-title reveal" data-delay="1" set:html={t('caseStudies.title')} />
+      </div>
+      <p class="section-sub reveal" data-delay="2">{t('caseStudies.subtitle')}</p>
+    </div>
+
+    <article class="case reveal">
+      <div class="case-visual">
+        <div class="viz viz-orch">
+          <span class="label">{t('cases.label.case01')}</span>
+          <span class="label-r">{t('cases.label.live')}</span>
+          <svg viewBox="0 0 600 380" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <radialGradient id="core" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#02DEF0" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="#02DEF0" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <!-- connecting lines -->
+            <g stroke="#02DEF0" stroke-width="0.8" fill="none" opacity="0.55">
+              <line x1="300" y1="190" x2="120" y2="100"/>
+              <line x1="300" y1="190" x2="480" y2="100"/>
+              <line x1="300" y1="190" x2="120" y2="280"/>
+              <line x1="300" y1="190" x2="480" y2="280"/>
+              <line x1="300" y1="190" x2="300" y2="60"/>
+              <line x1="300" y1="190" x2="300" y2="320"/>
+            </g>
+            <!-- core glow -->
+            <circle cx="300" cy="190" r="90" fill="url(#core)" opacity="0.5"/>
+            <circle cx="300" cy="190" r="38" fill="none" stroke="#02DEF0" stroke-width="1"/>
+            <circle cx="300" cy="190" r="22" fill="#02DEF0" opacity="0.18"/>
+            <circle cx="300" cy="190" r="6" fill="#02DEF0"/>
+            <!-- node boxes -->
+            <g font-family="JetBrains Mono, monospace" font-size="9" fill="#A1A1AA" letter-spacing="2">
+              <g><rect x="80" y="78" width="80" height="44" rx="4" fill="#0A0A0B" stroke="#1F1F22"/><text x="120" y="95" text-anchor="middle">{t('cases.label.crm')}</text><text x="120" y="110" text-anchor="middle" fill="#FEFEFE" font-size="11">Hubspot</text></g>
+              <g><rect x="440" y="78" width="80" height="44" rx="4" fill="#0A0A0B" stroke="#1F1F22"/><text x="480" y="95" text-anchor="middle">{t('cases.label.web')}</text><text x="480" y="110" text-anchor="middle" fill="#FEFEFE" font-size="11">{t('cases.label.site')}</text></g>
+              <g><rect x="80" y="258" width="80" height="44" rx="4" fill="#0A0A0B" stroke="#1F1F22"/><text x="120" y="275" text-anchor="middle">{t('cases.label.email')}</text><text x="120" y="290" text-anchor="middle" fill="#FEFEFE" font-size="11">Inbox</text></g>
+              <g><rect x="440" y="258" width="80" height="44" rx="4" fill="#0A0A0B" stroke="#1F1F22"/><text x="480" y="275" text-anchor="middle">{t('cases.label.docs')}</text><text x="480" y="290" text-anchor="middle" fill="#FEFEFE" font-size="11">RAG</text></g>
+              <g><rect x="260" y="36" width="80" height="34" rx="4" fill="#0A0A0B" stroke="#1F1F22"/><text x="300" y="56" text-anchor="middle" fill="#FEFEFE" font-size="10">AGENT_01</text></g>
+              <g><rect x="260" y="306" width="80" height="34" rx="4" fill="#0A0A0B" stroke="#1F1F22"/><text x="300" y="326" text-anchor="middle" fill="#FEFEFE" font-size="10">AGENT_02</text></g>
+            </g>
+            <!-- moving dots -->
+            <circle r="2.5" fill="#02DEF0"><animateMotion dur="3.4s" repeatCount="indefinite" path="M120,100 L300,190"/></circle>
+            <circle r="2.5" fill="#02DEF0"><animateMotion dur="4.0s" repeatCount="indefinite" path="M480,100 L300,190"/></circle>
+            <circle r="2.5" fill="#02DEF0"><animateMotion dur="3.6s" repeatCount="indefinite" path="M120,280 L300,190"/></circle>
+            <circle r="2.5" fill="#02DEF0"><animateMotion dur="4.2s" repeatCount="indefinite" path="M480,280 L300,190"/></circle>
+          </svg>
+        </div>
+      </div>
+      <div class="case-info">
+        <div class="case-tag">{t('cases.mariachi.territory')}</div>
+        <h3 class="case-name">{t('cases.mariachi.name')}</h3>
+        <p class="case-desc">{t('cases.mariachi.desc')}</p>
+        <div class="case-result"><span class="arrow">→</span><span>{t('cases.mariachi.result')}</span></div>
+        <a class="case-link" href={translatePath('contact')}>{t('cases.cta')} <span class="arr">→</span></a>
+      </div>
+    </article>
+
+    <article class="case reverse reveal">
+      <div class="case-visual">
+        <div class="viz viz-dash">
+          <span class="label" style="position:absolute;top:16px;left:16px">{t('cases.label.case02')}</span>
+          <span class="label-r">PROPSTACK</span>
+          <div style="margin-top:36px"></div>
+          <div class="row">
+            <div class="tile accent"><span class="k">{t('cases.dash.portfolio')}</span><span class="v">€18.4M</span><div class="spark cy"><i style="height:30%"></i><i style="height:55%"></i><i style="height:45%"></i><i style="height:70%"></i><i style="height:60%"></i><i style="height:85%"></i><i style="height:75%"></i><i style="height:92%"></i></div></div>
+            <div class="tile"><span class="k">{t('cases.dash.listings')}</span><span class="v">47</span></div>
+            <div class="tile"><span class="k">{t('cases.dash.leads')}</span><span class="v">128</span></div>
+          </div>
+          <div class="row tall">
+            <div class="tile"><span class="k">{t('cases.dash.conversion')}</span><div class="spark"><i style="height:40%"></i><i style="height:55%"></i><i style="height:48%"></i><i style="height:62%"></i><i style="height:70%"></i><i style="height:58%"></i><i style="height:72%"></i><i style="height:80%"></i><i style="height:68%"></i><i style="height:88%"></i></div><span class="v" style="font-size:18px">8.4%</span></div>
+            <div class="tile"><span class="k">{t('cases.dash.deals')}</span><span class="v">12</span></div>
+          </div>
+          <div class="row">
+            <div class="tile"><span class="k">{t('cases.dash.dom')}</span><span class="v">23d</span></div>
+            <div class="tile"><span class="k">{t('cases.dash.response')}</span><span class="v">3min</span></div>
+            <div class="tile"><span class="k">{t('cases.dash.pipeline')}</span><span class="v" style="color:var(--accent)">€4.1M</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="case-info">
+        <div class="case-tag">{t('cases.riedel.territory')}</div>
+        <h3 class="case-name">{t('cases.riedel.name')}</h3>
+        <p class="case-desc">{t('cases.riedel.desc')}</p>
+        <div class="case-result"><span class="arrow">→</span><span>{t('cases.riedel.result')}</span></div>
+        <a class="case-link" href={translatePath('contact')}>{t('cases.cta')} <span class="arr">→</span></a>
+      </div>
+    </article>
+  </div>
+</section>
