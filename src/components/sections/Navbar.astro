@@ -58,7 +58,232 @@ const translatePath = useTranslatedPath(lang);
           })
         }
       </div>
-      <a class="cta-primary" href={translatePath('contact')}>{t('nav.cta')} <span aria-hidden="true">→</span></a>
+      <a class="cta-primary desktop-cta" href={translatePath('contact')}>{t('nav.cta')} <span aria-hidden="true">→</span></a>
+      
+      <button class="mobile-menu-trigger" aria-label="Toggle menu" id="menuTrigger" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </div>
   </div>
 </nav>
+
+{/* Mobile Menu Drawer */}
+<div class="mobile-menu-drawer" id="mobileMenu">
+  <div class="mobile-menu-inner">
+    <div class="mobile-menu-links">
+      <a href={translatePath('#services')}>{t('nav.services')}</a>
+      <a href={translatePath('#cases')}>{t('nav.cases')}</a>
+      <a href={translatePath('#process')}>{t('nav.process')}</a>
+      <a href={translatePath('#collaboration')}>{t('nav.pricing')}</a>
+      <a href={translatePath('about')}>{t('nav.about')}</a>
+    </div>
+    
+    <div class="mobile-menu-footer">
+      <div class="lang-drawer" aria-label="Language selection drawer">
+        {
+          Object.keys(languages).map((l) => {
+            const currentPath = Astro.url.pathname;
+            const segments = currentPath.split('/').filter(Boolean);
+            
+            let pathName = currentPath;
+            if (segments[0] && segments[0] in languages) {
+              pathName = '/' + segments.slice(1).join('/');
+            }
+
+            const routeKey = getRouteFromUrl(Astro.url);
+            const targetPath = routeKey || pathName;
+            const href = translatePath(targetPath + Astro.url.search + Astro.url.hash, l);
+            
+            return (
+              <a 
+                href={href} 
+                class={lang === l ? 'on' : ''} 
+                aria-current={lang === l ? 'page' : undefined}
+              >
+                {l.toUpperCase()}
+              </a>
+            )
+          })
+        }
+      </div>
+      <a class="cta-primary w-full justify-center py-4 text-base" href={translatePath('contact')}>
+        {t('nav.cta')} <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Mobile trigger styles */
+  .mobile-menu-trigger {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 60;
+    position: relative;
+  }
+  
+  .mobile-menu-trigger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background-color: var(--fg);
+    margin: 5px 0;
+    transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
+  }
+  
+  .mobile-menu-trigger.open span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  
+  .mobile-menu-trigger.open span:nth-child(2) {
+    opacity: 0;
+  }
+  
+  .mobile-menu-trigger.open span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* Drawer styles */
+  .mobile-menu-drawer {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    height: 100dvh;
+    background: rgba(3, 3, 3, 0.98);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    z-index: 45;
+    transition: right 0.4s var(--ease);
+    display: flex;
+    flex-direction: column;
+    padding: 110px 32px 48px;
+    border-left: 1px solid var(--border);
+  }
+  
+  .mobile-menu-drawer.open {
+    right: 0;
+  }
+  
+  .mobile-menu-inner {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 40px;
+  }
+  
+  .mobile-menu-links {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  
+  .mobile-menu-links a {
+    font-family: 'Outfit', sans-serif;
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--muted);
+    transition: color 0.2s var(--ease), transform 0.2s var(--ease);
+    display: inline-block;
+  }
+  
+  .mobile-menu-links a:hover {
+    color: var(--fg);
+    transform: translateX(4px);
+  }
+  
+  .mobile-menu-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    align-items: center;
+    width: 100%;
+  }
+
+  .lang-drawer {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    background: rgba(31, 31, 34, 0.4);
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    width: fit-content;
+  }
+
+  .lang-drawer a {
+    padding: 6px 14px;
+    border-radius: 100px;
+    color: var(--muted-2);
+    transition: all 0.25s var(--ease);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lang-drawer a:hover {
+    color: var(--muted);
+  }
+
+  .lang-drawer a.on {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  /* Responsive toggles */
+  @media (max-width: 920px) {
+    .mobile-menu-trigger {
+      display: block;
+    }
+    .desktop-cta {
+      display: none !important;
+    }
+    .nav-right .lang {
+      display: none !important; /* Hide language picker in header on mobile, keep in drawer */
+    }
+  }
+</style>
+
+<script>
+  function initMobileMenu() {
+    const trigger = document.getElementById('menuTrigger');
+    const drawer = document.getElementById('mobileMenu');
+    
+    if (trigger && drawer) {
+      // Toggle menu
+      trigger.addEventListener('click', () => {
+        const isOpen = drawer.classList.toggle('open');
+        trigger.classList.toggle('open');
+        trigger.setAttribute('aria-expanded', String(isOpen));
+        
+        // Prevent body scrolling
+        document.body.style.overflow = isOpen ? 'hidden' : '';
+      });
+
+      // Close menu when clicking link
+      const links = drawer.querySelectorAll('.mobile-menu-links a, .mobile-menu-footer a');
+      links.forEach(link => {
+        link.addEventListener('click', () => {
+          drawer.classList.remove('open');
+          trigger.classList.remove('open');
+          trigger.setAttribute('aria-expanded', 'false');
+          document.body.style.overflow = '';
+        });
+      });
+    }
+  }
+
+  // Runs on initial page load
+  initMobileMenu();
+
+  // Runs on view transitions / Astro swaps
+  document.addEventListener('astro:after-swap', initMobileMenu);
+</script>
